@@ -15,7 +15,7 @@ export function Footer() {
             Instagram
           </a>
           <a
-            href={process.env.WHATSAPP_GROUP_URL || "#"}
+            href="#"
             target="_blank"
             rel="noopener noreferrer"
             className="text-cream hover:text-accent transition-colors"

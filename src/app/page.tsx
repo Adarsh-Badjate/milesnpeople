@@ -47,7 +47,7 @@ export default async function HomePage() {
   const nextRun = runs.find((r) => r.status === "open") || runs[0];
 
   return (
-    <div className="min-h-screen bg-bg text-ink font-[family-name:var(--font-barlow)]">
+    <div className="min-h-screen overflow-x-hidden bg-bg text-ink font-[family-name:var(--font-barlow)]">
       <Header />
 
       {/* Hero */}
@@ -96,10 +96,7 @@ export default async function HomePage() {
                   NEXT RUN
                 </div>
                 <div className="mt-1 font-[family-name:var(--font-anton)] text-[72px] leading-none text-cream">
-                  {nextRun.week}
-                </div>
-                <div className="mt-1 font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.2em] text-accent">
-                  WEEK
+                  WEEK {nextRun.week.padStart(3, "0")}
                 </div>
               </div>
             </div>
@@ -155,7 +152,7 @@ export default async function HomePage() {
           <h2 id="runs-title" className="mb-7 font-[family-name:var(--font-anton)] text-5xl font-normal leading-none">
             UPCOMING RUNS
           </h2>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-5">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-5">
             {runs.map((run) => (
               <div key={run.id} className="flex flex-col gap-2.5 rounded-2xl border border-border bg-white p-[22px]">
                 <div className={`font-[family-name:var(--font-barlow-condensed)] text-[15px] font-extrabold tracking-[0.2em] ${run.status === "open" ? "text-accent" : "text-muted"}`}>
@@ -260,7 +257,7 @@ export default async function HomePage() {
               <details key={faq.q} className="border-b border-border py-[18px] group">
                 <summary className="flex items-center justify-between text-[19px] font-semibold">
                   {faq.q}
-                  <span className="ml-4 text-muted transition-transform group-open:rotate-45">+</span>
+                  <span className="ml-4 text-muted transition-transform group-open:rotate-180">▾</span>
                 </summary>
                 <p className="mt-2 text-[#3D3D3D]">{faq.a}</p>
               </details>

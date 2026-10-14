@@ -97,7 +97,7 @@ export function RegisterForm({
   }
 
   const inputClass =
-    "w-full rounded-xl border border-cream/20 bg-cream/5 px-4 py-3 text-cream placeholder:text-cream/30 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent transition-colors";
+    "w-full rounded-xl border border-cream/20 bg-cream/5 px-4 py-3 text-cream placeholder:text-cream/30 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent transition-colors [&_option]:bg-[#1a1a1a] [&_option]:text-cream";
   const labelClass =
     "block mb-1.5 font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.12em] text-cream/60";
 
