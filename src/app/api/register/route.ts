@@ -1,0 +1,114 @@
+import { NextRequest, NextResponse } from "next/server";
+import {
+  getRunById,
+  getRegistrationCount,
+  isDuplicate,
+  getNextBib,
+  appendRegistration,
+} from "@/lib/sheets";
+
+const INDIAN_PHONE = /^[6-9]\d{9}$/;
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const {
+      run_id,
+      name,
+      whatsapp,
+      email,
+      instagram,
+      age_group,
+      gender,
+      distance,
+      experience,
+      emergency_name,
+      emergency_phone,
+      source,
+      waiver,
+      whatsapp_optin,
+    } = body;
+
+    // Validation
+    const errors: string[] = [];
+    if (!run_id) errors.push("Run ID is required");
+    if (!name || name.trim().length < 2) errors.push("Name is required (min 2 chars)");
+    if (!whatsapp || !INDIAN_PHONE.test(whatsapp.replace(/\s/g, "")))
+      errors.push("Valid Indian mobile number required");
+    if (!email || !email.includes("@")) errors.push("Valid email required");
+    if (!age_group) errors.push("Age group is required");
+    if (!distance || !["3K", "5K"].includes(distance))
+      errors.push("Distance must be 3K or 5K");
+    if (!experience) errors.push("Experience is required");
+    if (!emergency_name) errors.push("Emergency contact name required");
+    if (!emergency_phone || !INDIAN_PHONE.test(emergency_phone.replace(/\s/g, "")))
+      errors.push("Valid emergency phone number required");
+    if (waiver !== "true" && waiver !== true)
+      errors.push("Waiver must be accepted");
+
+    if (errors.length > 0) {
+      return NextResponse.json({ error: errors.join("; ") }, { status: 400 });
+    }
+
+    // Check run exists and is open
+    const run = await getRunById(run_id);
+    if (!run) {
+      return NextResponse.json({ error: "Run not found" }, { status: 404 });
+    }
+    if (run.status !== "open") {
+      return NextResponse.json({ error: "Registrations are not open for this run" }, { status: 400 });
+    }
+
+    // Check capacity
+    const count = await getRegistrationCount(run_id);
+    if (count >= run.capacity) {
+      return NextResponse.json({ error: "This run is full" }, { status: 400 });
+    }
+
+    // Check duplicate
+    const cleanPhone = whatsapp.replace(/\s/g, "");
+    const dup = await isDuplicate(run_id, cleanPhone);
+    if (dup) {
+      return NextResponse.json(
+        { error: "You have already registered for this run with this WhatsApp number" },
+        { status: 409 }
+      );
+    }
+
+    // Assign bib
+    const bib = await getNextBib(run_id);
+
+    // Save
+    await appendRegistration({
+      run_id,
+      bib,
+      name: name.trim(),
+      whatsapp: cleanPhone,
+      email: email.trim(),
+      instagram: (instagram || "").trim(),
+      age_group,
+      gender: gender || "",
+      distance,
+      experience,
+      emergency_name: emergency_name.trim(),
+      emergency_phone: emergency_phone.replace(/\s/g, ""),
+      source: source || "",
+      waiver: "TRUE",
+      whatsapp_optin: whatsapp_optin ? "TRUE" : "",
+    });
+
+    return NextResponse.json({
+      success: true,
+      bib,
+      name: name.trim(),
+      run_id,
+      week: run.week,
+    });
+  } catch (err) {
+    console.error("Registration error:", err);
+    return NextResponse.json(
+      { error: "Something went wrong. Please try again." },
+      { status: 500 }
+    );
+  }
+}
