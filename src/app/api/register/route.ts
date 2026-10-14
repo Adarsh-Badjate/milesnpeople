@@ -40,9 +40,6 @@ export async function POST(req: NextRequest) {
     if (!distance || !["3K", "5K"].includes(distance))
       errors.push("Distance must be 3K or 5K");
     if (!experience) errors.push("Experience is required");
-    if (!emergency_name) errors.push("Emergency contact name required");
-    if (!emergency_phone || !INDIAN_PHONE.test(emergency_phone.replace(/\s/g, "")))
-      errors.push("Valid emergency phone number required");
     if (waiver !== "true" && waiver !== true)
       errors.push("Waiver must be accepted");
 

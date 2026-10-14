@@ -39,8 +39,6 @@ export function RegisterForm({
   const [gender, setGender] = useState("");
   const [distance, setDistance] = useState("");
   const [experience, setExperience] = useState("");
-  const [emergencyName, setEmergencyName] = useState("");
-  const [emergencyPhone, setEmergencyPhone] = useState("");
   const [source, setSource] = useState("");
   const [waiver, setWaiver] = useState(false);
   const [whatsappOptin, setWhatsappOptin] = useState(true);
@@ -72,8 +70,8 @@ export function RegisterForm({
           gender,
           distance,
           experience,
-          emergency_name: emergencyName,
-          emergency_phone: emergencyPhone,
+          emergency_name: "",
+          emergency_phone: "",
           source,
           waiver: waiver ? "true" : "false",
           whatsapp_optin: whatsappOptin,
@@ -246,39 +244,12 @@ export function RegisterForm({
         </div>
       </div>
 
-      {/* Safety */}
+      {/* More */}
       <h2 className="mb-5 mt-8 font-[family-name:var(--font-barlow-condensed)] text-lg font-extrabold tracking-[0.12em] text-accent">
-        SAFETY
+        ONE LAST THING
       </h2>
 
       <div className="space-y-4">
-        <div>
-          <label htmlFor="emergency_name" className={labelClass}>EMERGENCY CONTACT NAME *</label>
-          <input
-            id="emergency_name"
-            type="text"
-            required
-            value={emergencyName}
-            onChange={(e) => setEmergencyName(e.target.value)}
-            placeholder="Contact name"
-            className={inputClass}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="emergency_phone" className={labelClass}>EMERGENCY CONTACT PHONE *</label>
-          <input
-            id="emergency_phone"
-            type="tel"
-            required
-            pattern="[6-9][0-9]{9}"
-            value={emergencyPhone}
-            onChange={(e) => setEmergencyPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-            placeholder="10-digit mobile number"
-            className={inputClass}
-          />
-        </div>
-
         <div>
           <label htmlFor="source" className={labelClass}>HOW DID YOU HEAR ABOUT US?</label>
           <select
