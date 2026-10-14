@@ -1,9 +1,8 @@
-import { getRuns, getRegistrationCount } from "@/lib/sheets";
+import { getRuns } from "@/lib/sheets";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Marquee } from "@/components/Marquee";
 import { Countdown } from "@/components/Countdown";
-import { LogoMark } from "@/components/Logo";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 60;
@@ -34,14 +33,6 @@ async function getRunsData() {
   }
 }
 
-async function getRegCount(runId: string) {
-  try {
-    return await getRegistrationCount(runId);
-  } catch {
-    return 0;
-  }
-}
-
 function formatDate(dateStr: string) {
   try {
     const d = new Date(dateStr + "T00:00:00");
@@ -54,8 +45,6 @@ function formatDate(dateStr: string) {
 export default async function HomePage() {
   const runs = await getRunsData();
   const nextRun = runs.find((r) => r.status === "open") || runs[0];
-  const regCount = await getRegCount(nextRun.id);
-  const spotsLeft = nextRun.capacity - regCount;
 
   return (
     <div className="min-h-screen bg-bg text-ink font-[family-name:var(--font-barlow)]">
@@ -97,14 +86,21 @@ export default async function HomePage() {
 
           {/* Next Run Card */}
           <div className="flex min-w-0 flex-1 basis-[400px] flex-col overflow-hidden rounded-[20px] border-2 border-ink bg-white">
-            <div className="relative h-[220px] bg-[#ECEAE4]">
-              <LogoMark
-                stroke="#D9D6CF"
-                size={200}
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-30"
-              />
-              <div className="absolute left-4 top-4 rounded-full bg-ink px-3 py-1.5 font-[family-name:var(--font-barlow-condensed)] text-[15px] font-extrabold tracking-[0.18em] text-white">
-                NEXT RUN · WEEK {nextRun.week}
+            <div className="relative flex h-[220px] flex-col items-center justify-center bg-ink text-cream">
+              {/* Decorative zigzag background */}
+              <svg viewBox="205 272 390 260" fill="none" className="absolute inset-0 h-full w-full opacity-[0.06]" preserveAspectRatio="xMidYMid slice">
+                <polyline points="240,500 312,305 399,460 487,290 564,515" stroke="#F4F2ED" strokeWidth="26" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <div className="relative z-10 text-center">
+                <div className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.3em] text-cream/50">
+                  NEXT RUN
+                </div>
+                <div className="mt-1 font-[family-name:var(--font-anton)] text-[72px] leading-none text-cream">
+                  {nextRun.week}
+                </div>
+                <div className="mt-1 font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.2em] text-accent">
+                  WEEK
+                </div>
               </div>
             </div>
             <div className="flex flex-col gap-3.5 p-[22px_24px_24px]">
@@ -135,18 +131,6 @@ export default async function HomePage() {
                   <div className="text-[13px] font-semibold tracking-[0.16em] text-muted">PARTNER</div>
                   {nextRun.partner || "—"}
                 </div>
-              </div>
-
-              <div className="flex items-center justify-between gap-3 rounded-xl bg-[#F3F1EC] px-3.5 py-3 text-[15px]">
-                <span className="font-semibold">{spotsLeft > 0 ? `${spotsLeft} spots left` : "Full"}</span>
-                <span className="text-muted">{regCount} registered</span>
-              </div>
-
-              <div className="h-2 rounded-full bg-[#ECEAE4] overflow-hidden">
-                <div
-                  className="h-full rounded-full bg-accent transition-all"
-                  style={{ width: `${Math.min((regCount / nextRun.capacity) * 100, 100)}%` }}
-                />
               </div>
 
               <a
