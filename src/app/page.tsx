@@ -200,22 +200,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Community */}
-      <section id="community" aria-labelledby="community-title" className="bg-bg">
-        <div className="mx-auto max-w-[1200px] px-5 py-16">
-          <div className="mb-7 flex flex-wrap items-end justify-between gap-3">
-            <h2 id="community-title" className="m-0 font-[family-name:var(--font-anton)] text-5xl font-normal leading-none">THE COMMUNITY</h2>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="font-semibold text-ink">Follow on Instagram →</a>
-          </div>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">
-            {["Week 001 — Cafe Salt and Pepper", "Week 002 — Kranti Chowk crew photo", "Post-run hangout", "Reel / video tile"].map((label) => (
-              <div key={label} className="relative h-60 overflow-hidden rounded-[14px] bg-[#ECEAE4]">
-                <div className="absolute bottom-3 left-3.5 text-sm text-muted">[{label}]</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Community — hidden until photos are available */}
 
       {/* Partners */}
       <section id="partners" aria-labelledby="partners-title" className="border-t border-border bg-bg">
