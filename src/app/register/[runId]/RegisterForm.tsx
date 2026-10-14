@@ -186,17 +186,17 @@ export function RegisterForm({
         </div>
 
         <div>
-          <label htmlFor="gender" className={labelClass}>GENDER (OPTIONAL)</label>
+          <label htmlFor="gender" className={labelClass}>GENDER *</label>
           <select
             id="gender"
+            required
             value={gender}
             onChange={(e) => setGender(e.target.value)}
             className={inputClass}
           >
-            <option value="">Prefer not to say</option>
+            <option value="">Select</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
-            <option value="Non-binary">Non-binary</option>
           </select>
         </div>
       </div>

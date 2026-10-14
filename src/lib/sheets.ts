@@ -118,6 +118,11 @@ export async function getRegistrationCount(runId: string): Promise<number> {
   return regs.length;
 }
 
+export async function getGenderCount(runId: string, gender: string): Promise<number> {
+  const regs = await getRegistrations(runId);
+  return regs.filter((r) => r.gender.toLowerCase() === gender.toLowerCase()).length;
+}
+
 export async function isDuplicate(runId: string, whatsapp: string): Promise<boolean> {
   const regs = await getRegistrations(runId);
   return regs.some((r) => r.whatsapp === whatsapp);

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   getRunById,
   getRegistrationCount,
+  getGenderCount,
   isDuplicate,
   getNextBib,
   appendRegistration,
@@ -40,6 +41,8 @@ export async function POST(req: NextRequest) {
     if (!distance || !["3K", "5K"].includes(distance))
       errors.push("Distance must be 3K or 5K");
     if (!experience) errors.push("Experience is required");
+    if (!gender || !["Male", "Female"].includes(gender))
+      errors.push("Gender is required");
     if (waiver !== "true" && waiver !== true)
       errors.push("Waiver must be accepted");
 
@@ -60,6 +63,18 @@ export async function POST(req: NextRequest) {
     const count = await getRegistrationCount(run_id);
     if (count >= run.capacity) {
       return NextResponse.json({ error: "This run is full" }, { status: 400 });
+    }
+
+    // Check gender-based capacity (58% male, 42% female)
+    const maleLimit = Math.floor(run.capacity * 0.58);
+    const femaleLimit = run.capacity - maleLimit;
+    const genderCount = await getGenderCount(run_id, gender);
+    const genderLimit = gender === "Male" ? maleLimit : femaleLimit;
+    if (genderCount >= genderLimit) {
+      return NextResponse.json(
+        { error: `${gender} spots are full for this run. ${genderLimit} spots were available.` },
+        { status: 400 }
+      );
     }
 
     // Check duplicate
