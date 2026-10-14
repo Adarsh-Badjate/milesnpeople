@@ -222,9 +222,18 @@ export default async function HomePage() {
         <div className="mx-auto max-w-[1200px] px-5 py-14">
           <h2 id="partners-title" className="mb-6 font-[family-name:var(--font-barlow-condensed)] text-lg font-extrabold tracking-[0.28em] text-muted">RUN WITH OUR PARTNERS</h2>
           <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4">
-            {["Starbucks", "Meridian Ice Cream", "Tides by Terra", "Salt n Pepper", "Partner with us →"].map((name) => (
-              <div key={name} className="flex h-24 items-center justify-center rounded-xl border border-dashed border-[#BDB9B0] text-muted">{name}</div>
+            {[
+              { name: "Salt n Pepper", logo: "/partners/salt-n-pepper.png" },
+              { name: "Starbucks", logo: "/partners/starbucks.png" },
+              { name: "Meridian Ice Cream", logo: "/partners/meridian.png" },
+            ].map((partner) => (
+              <div key={partner.name} className="flex h-24 items-center justify-center rounded-xl border border-[#D9D6CF] bg-white p-4">
+                <img src={partner.logo} alt={partner.name} className="max-h-16 max-w-[140px] object-contain" />
+              </div>
             ))}
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="flex h-24 items-center justify-center rounded-xl border border-dashed border-[#BDB9B0] text-muted hover:border-accent hover:text-accent transition-colors font-semibold">
+              Partner with us →
+            </a>
           </div>
         </div>
       </section>
