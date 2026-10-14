@@ -202,23 +202,35 @@ export default async function HomePage() {
 
       {/* Community — hidden until photos are available */}
 
-      {/* Partners */}
-      <section id="partners" aria-labelledby="partners-title" className="border-t border-border bg-bg">
-        <div className="mx-auto max-w-[1200px] px-5 py-14">
+      {/* Partners — scrolling marquee */}
+      <section id="partners" aria-labelledby="partners-title" className="border-t border-border bg-bg overflow-hidden">
+        <div className="mx-auto max-w-[1200px] px-5 pt-14 pb-4">
           <h2 id="partners-title" className="mb-6 font-[family-name:var(--font-barlow-condensed)] text-lg font-extrabold tracking-[0.28em] text-muted">RUN WITH OUR PARTNERS</h2>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4">
+        </div>
+        <div className="relative py-8">
+          <div className="animate-marquee-slow flex w-max items-center gap-16">
             {[
               { name: "Salt n Pepper", logo: "/partners/salt-n-pepper.png" },
               { name: "Starbucks", logo: "/partners/starbucks.png" },
               { name: "Meridian Ice Cream", logo: "/partners/meridian.png" },
-            ].map((partner) => (
-              <div key={partner.name} className="flex h-24 items-center justify-center rounded-xl border border-[#D9D6CF] bg-white p-4">
-                <img src={partner.logo} alt={partner.name} className="max-h-16 max-w-[140px] object-contain" />
+              { name: "Your brand here?", logo: "" },
+              { name: "Salt n Pepper", logo: "/partners/salt-n-pepper.png" },
+              { name: "Starbucks", logo: "/partners/starbucks.png" },
+              { name: "Meridian Ice Cream", logo: "/partners/meridian.png" },
+              { name: "Your brand here?", logo: "" },
+              { name: "Salt n Pepper", logo: "/partners/salt-n-pepper.png" },
+              { name: "Starbucks", logo: "/partners/starbucks.png" },
+              { name: "Meridian Ice Cream", logo: "/partners/meridian.png" },
+              { name: "Your brand here?", logo: "" },
+            ].map((partner, i) => (
+              <div key={`${partner.name}-${i}`} className="flex-shrink-0">
+                {partner.logo ? (
+                  <img src={partner.logo} alt={partner.name} className="h-16 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+                ) : (
+                  <span className="font-[family-name:var(--font-barlow-condensed)] text-lg font-bold tracking-[0.08em] text-muted/50 italic">Your brand here?</span>
+                )}
               </div>
             ))}
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="flex h-24 items-center justify-center rounded-xl border border-dashed border-[#BDB9B0] text-muted hover:border-accent hover:text-accent transition-colors font-semibold">
-              Partner with us →
-            </a>
           </div>
         </div>
       </section>
