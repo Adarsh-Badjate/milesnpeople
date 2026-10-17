@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getRegistrations, getRunById, getRuns } from "@/lib/sheets";
-import { generateTicketHTML, generateQRBuffer, sendTicketEmail } from "@/lib/email";
+import { generateTicketHTML, sendTicketEmail } from "@/lib/email";
 
 function isAuthed(cookieStore: Awaited<ReturnType<typeof cookies>>) {
   return cookieStore.get("admin_token")?.value === process.env.ADMIN_PASSWORD;
@@ -69,10 +69,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No registrations found to use as sample" }, { status: 404 });
     }
     const html = generateTicketHTML(sample, run);
-    const qrBuffer = await generateQRBuffer(sample);
     const subject = `Your Ticket: ${run.title} — Bib #${sample.bib}`;
     try {
-      await sendTicketEmail(testEmail, subject, html, qrBuffer);
+      await sendTicketEmail(testEmail, subject, html);
       return NextResponse.json({
         success: true,
         message: `Test email sent to ${testEmail} (using registration: ${sample.name}, bib ${sample.bib})`,
@@ -115,10 +114,9 @@ export async function POST(req: NextRequest) {
 
   for (const reg of toSend) {
     const html = generateTicketHTML(reg, run);
-    const qrBuffer = await generateQRBuffer(reg);
     const subject = `Your Ticket: ${run.title} — Bib #${reg.bib}`;
     try {
-      await sendTicketEmail(reg.email, subject, html, qrBuffer);
+      await sendTicketEmail(reg.email, subject, html);
       results.push({ bib: reg.bib, name: reg.name, email: reg.email, status: "sent" });
     } catch (err) {
       results.push({ bib: reg.bib, name: reg.name, email: reg.email, status: "failed", error: String(err) });

@@ -65,8 +65,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "This run is full" }, { status: 400 });
     }
 
-    // Check gender-based capacity (58% male, 42% female)
-    const maleLimit = Math.floor(run.capacity * 0.58);
+    // Check gender-based capacity (60% male, 40% female)
+    const maleLimit = Math.floor(run.capacity * 0.60);
     const femaleLimit = run.capacity - maleLimit;
     const genderCount = await getGenderCount(run_id, gender);
     const genderLimit = gender === "Male" ? maleLimit : femaleLimit;

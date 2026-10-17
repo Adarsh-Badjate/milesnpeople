@@ -3,6 +3,8 @@ import QRCode from "qrcode";
 import type { Registration, Run } from "./sheets";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://milesnpeople.in";
+const INSTAGRAM_URL = "https://www.instagram.com/milesnpeople/";
+const WHATSAPP_URL = "https://chat.whatsapp.com/KVCSvYsJskdIjZSZDkiLOT";
 
 // ── Gmail SMTP Transporter ──
 
@@ -23,7 +25,7 @@ export async function generateQRBuffer(
   return QRCode.toBuffer(checkinUrl, {
     width: 300,
     margin: 1,
-    color: { dark: "#141414", light: "#FAF9F6" },
+    color: { dark: "#111111", light: "#FFFFFF" },
   });
 }
 
@@ -33,21 +35,41 @@ export async function sendTicketEmail(
   to: string,
   subject: string,
   html: string,
-  qrBuffer: Buffer,
 ) {
   return transporter.sendMail({
     from: `"Miles & People" <${process.env.GMAIL_USER}>`,
     to,
     subject,
     html,
-    attachments: [
-      {
-        filename: "qr-checkin.png",
-        content: qrBuffer,
-        cid: "qrcheckin",
-      },
-    ],
   });
+}
+
+// ── Format date for display ──
+
+function formatDate(dateStr: string): string {
+  try {
+    const d = new Date(dateStr + "T00:00:00");
+    return d.toLocaleDateString("en-IN", {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  } catch {
+    return dateStr;
+  }
+}
+
+// ── Generate Google Calendar URL ──
+
+function generateCalendarUrl(run: Run): string {
+  const date = run.date.replace(/-/g, "");
+  const title = encodeURIComponent(`Miles & People — ${run.title}`);
+  const location = encodeURIComponent(run.meeting_point || "");
+  const details = encodeURIComponent(
+    `Community Run by Miles & People. Meeting Point: ${run.meeting_point || "TBA"}. Map: ${run.map_url || ""}`,
+  );
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${date}T000000/${date}T040000&location=${location}&details=${details}`;
 }
 
 // ── Generate Ticket HTML ──
@@ -56,216 +78,166 @@ export function generateTicketHTML(
   registration: Registration,
   run: Run,
 ): string {
-  const firstName = registration.name.split(" ")[0];
+  const firstName = registration.name.split(" ")[0].toUpperCase();
+  const fullName = registration.name;
   const distanceLabel = registration.distance || "5K";
-  const formattedDate = run.date || "Oct 18, 2026";
+  const dateDisplay = formatDate(run.date);
   const startTime = run.start_time || "5:30 AM";
+  const meetingPoint = run.meeting_point || "TBA";
+  const mapUrl = run.map_url || "#";
+  const bibNumber = registration.bib;
+  const week = run.week ? `WEEK ${run.week}` : "";
+  const calendarUrl = generateCalendarUrl(run);
+  const checkinUrl = `${SITE_URL}/admin/checkin?runId=${registration.run_id}&bib=${registration.bib}`;
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(checkinUrl)}`;
 
-  return `
-<!DOCTYPE html>
-<html lang="en">
+  return `<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Running Ticket - Miles &amp; People</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="x-apple-disable-message-reformatting">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<title>You're in — Miles &amp; People</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; padding:0; background:#F1EEE8; }
+  table { border-collapse:collapse; }
+  img { border:0; display:block; outline:none; text-decoration:none; }
+  a { text-decoration:none; }
+  @media only screen and (max-width:620px) {
+    .container { width:100% !important; }
+    .px { padding-left:22px !important; padding-right:22px !important; }
+    .col { display:block !important; width:100% !important; padding:0 0 16px 0 !important; }
+    .bibno { font-size:84px !important; }
+    .btn { display:block !important; width:100% !important; margin:0 0 10px 0 !important; }
+  }
+</style>
 </head>
-<body style="margin:0;padding:0;background-color:#FAF9F6;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#141414;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#FAF9F6;">
-    <tr>
-      <td align="center" style="padding:24px 16px;">
+<body style="margin:0; padding:0; background:#F1EEE8;">
 
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background-color:#FFFFFF;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+<div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#F1EEE8;">Your bib for Sunday is ready. Show the QR at check-in. Come for the miles, stay for the people.</div>
 
-          <!-- Header -->
-          <tr>
-            <td style="background-color:#141414;padding:28px 32px;text-align:center;">
-              <h1 style="margin:0;font-size:28px;font-weight:900;letter-spacing:2px;color:#FAF9F6;text-transform:uppercase;">
-                MILES <span style="color:#C2531F;">&amp;</span> PEOPLE
-              </h1>
-              <p style="margin:6px 0 0;font-size:11px;letter-spacing:4px;color:#999;text-transform:uppercase;">Running Community</p>
-            </td>
-          </tr>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F1EEE8;">
+<tr><td align="center" style="padding:28px 12px;">
 
-          <!-- Accent stripe -->
-          <tr>
-            <td style="background:linear-gradient(90deg,#C2531F,#E0733D);height:4px;font-size:0;line-height:0;">&nbsp;</td>
-          </tr>
+<table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px;">
 
-          <!-- Greeting -->
-          <tr>
-            <td style="padding:28px 32px 8px;text-align:center;">
-              <p style="margin:0;font-size:15px;color:#6B6B6B;text-transform:uppercase;letter-spacing:2px;">You're in, ${firstName}!</p>
-              <h2 style="margin:8px 0 0;font-size:22px;font-weight:800;color:#141414;line-height:1.3;">
-                ${run.title || "Morning Run"}
-              </h2>
-            </td>
-          </tr>
+  <!-- Header -->
+  <tr><td class="px" style="background:#0A0A0A; border-radius:18px 18px 0 0; padding:26px 36px 22px; font-family:Arial, Helvetica, sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td style="font-family:'Arial Black', Arial, Helvetica, sans-serif; font-weight:900; font-size:20px; letter-spacing:2px; color:#F4F2ED;">MILES <span style="color:#E0733D;">&amp;</span> PEOPLE</td>
+      <td align="right" style="font-family:Arial, Helvetica, sans-serif; font-weight:bold; font-size:11px; letter-spacing:2.5px; color:#9B968C;">RUN CLUB</td>
+    </tr></table>
+  </td></tr>
+  <tr><td style="background:#C2531F; height:5px; line-height:5px; font-size:5px;">&nbsp;</td></tr>
 
-          <!-- QR Code (top, replaces bib) -->
-          <tr>
-            <td align="center" style="padding:20px 32px;">
-              <table role="presentation" cellpadding="0" cellspacing="0" style="border:3px dashed #C2531F;border-radius:12px;width:220px;">
-                <tr>
-                  <td style="padding:20px;text-align:center;">
-                    <img src="cid:qrcheckin" alt="Check-in QR Code" width="160" height="160" style="display:block;margin:0 auto;border-radius:8px;" />
-                    <p style="margin:12px 0 0;font-size:12px;font-weight:700;color:#141414;text-transform:uppercase;letter-spacing:1px;">Show this at check-in</p>
-                    <p style="margin:4px 0 0;font-size:11px;color:#6B6B6B;">Bib #${registration.bib}</p>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
+  <!-- Greeting -->
+  <tr><td class="px" style="background:#0A0A0A; padding:34px 36px 30px; font-family:Arial, Helvetica, sans-serif; color:#F4F2ED;">
+    <div style="font-size:12px; font-weight:bold; letter-spacing:3px; color:#E0733D;">REGISTRATION CONFIRMED</div>
+    <div style="margin-top:10px; font-family:Anton, Impact, 'Arial Narrow Bold', sans-serif; font-size:52px; line-height:54px; letter-spacing:0.5px; color:#F4F2ED;">YOU'RE IN, ${firstName}.</div>
+    <div style="margin-top:12px; font-size:16px; line-height:24px; color:#CFCAC0;">Your bib for Sunday is below. Come for the miles, stay for the people.</div>
+  </td></tr>
 
-          <!-- Runner info pills -->
-          <tr>
-            <td align="center" style="padding:0 32px 20px;">
-              <table role="presentation" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="padding:0 6px;">
-                    <table role="presentation" cellpadding="0" cellspacing="0" style="background-color:#FAF9F6;border-radius:20px;">
-                      <tr>
-                        <td style="padding:6px 16px;font-size:13px;font-weight:700;color:#141414;">
-                          ${registration.name}
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                  <td style="padding:0 6px;">
-                    <table role="presentation" cellpadding="0" cellspacing="0" style="background-color:#C2531F;border-radius:20px;">
-                      <tr>
-                        <td style="padding:6px 16px;font-size:13px;font-weight:700;color:#FFFFFF;">
-                          ${distanceLabel}
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
+  <!-- Bib ticket -->
+  <tr><td class="px" style="background:#0A0A0A; padding:0 36px 36px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F4F2ED; border-radius:16px; overflow:hidden;">
+      <tr><td style="background:#C2531F; padding:14px 24px; font-family:Arial, Helvetica, sans-serif;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td style="font-weight:bold; font-size:13px; letter-spacing:2.5px; color:#FFFFFF;">${week} · COMMUNITY RUN</td>
+          <td align="right" style="font-weight:bold; font-size:13px; letter-spacing:2px; color:#FFFFFF;">FREE ENTRY</td>
+        </tr></table>
+      </td></tr>
+      <tr><td align="center" style="padding:26px 24px 8px; font-family:Arial, Helvetica, sans-serif; color:#111111;">
+        <div style="font-size:11px; font-weight:bold; letter-spacing:3px; color:#7A766E;">BIB NO.</div>
+        <div class="bibno" style="font-family:Anton, Impact, 'Arial Narrow Bold', sans-serif; font-size:104px; line-height:104px; color:#111111;">${bibNumber}</div>
+        <div style="margin-top:12px;">
+          <span style="display:inline-block; padding:7px 14px; border-radius:999px; background:#FFFFFF; border:1px solid #DDD8CE; font-size:14px; font-weight:bold; color:#111111;">${fullName}</span>
+          <span style="display:inline-block; padding:7px 14px; border-radius:999px; background:#C2531F; font-size:14px; font-weight:bold; color:#FFFFFF;">${distanceLabel}</span>
+        </div>
+      </td></tr>
+      <tr><td style="padding:18px 14px 0;"><div style="border-top:2px dashed #C9C3B8; height:1px; line-height:1px; font-size:1px;">&nbsp;</div></td></tr>
+      <tr><td style="padding:20px 24px 24px; font-family:Arial, Helvetica, sans-serif;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td class="col" valign="middle" style="padding-right:16px;">
+            <div style="font-size:11px; font-weight:bold; letter-spacing:2.5px; color:#7A766E;">DATE</div>
+            <div style="margin-top:4px; font-size:17px; font-weight:bold; color:#111111;">${dateDisplay}</div>
+            <div style="margin-top:14px; font-size:11px; font-weight:bold; letter-spacing:2.5px; color:#7A766E;">START</div>
+            <div style="margin-top:4px; font-size:17px; font-weight:bold; color:#111111;">${startTime}</div>
+            <div style="margin-top:14px; font-size:11px; font-weight:bold; letter-spacing:2.5px; color:#7A766E;">MEETING POINT</div>
+            <div style="margin-top:4px; font-size:17px; font-weight:bold; color:#111111;"><a href="${mapUrl}" style="color:#111111; text-decoration:underline;">${meetingPoint}</a></div>
+          </td>
+          <td class="col" valign="middle" align="center" width="180" style="width:180px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="background:#FFFFFF; border-radius:12px; border:2px solid #111111;"><tr><td align="center" style="padding:12px;">
+              <img src="${qrUrl}" width="140" height="140" alt="Check-in QR code for bib ${bibNumber}" style="width:140px; height:140px;">
+              <div style="margin-top:8px; font-family:Arial, Helvetica, sans-serif; font-size:10px; font-weight:bold; letter-spacing:2px; color:#111111;">SCAN AT CHECK-IN</div>
+            </td></tr></table>
+          </td>
+        </tr></table>
+      </td></tr>
+    </table>
+  </td></tr>
 
-          <!-- Divider -->
-          <tr>
-            <td style="padding:0 32px;">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="border-top:1px dashed #D9D6CF;font-size:0;line-height:0;height:1px;">&nbsp;</td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-          <!-- Run details -->
-          <tr>
-            <td style="padding:20px 32px;">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td width="50%" style="padding:8px 0;vertical-align:top;">
-                    <p style="margin:0;font-size:10px;letter-spacing:2px;color:#6B6B6B;text-transform:uppercase;">Date</p>
-                    <p style="margin:2px 0 0;font-size:15px;font-weight:700;color:#141414;">${formattedDate}</p>
-                  </td>
-                  <td width="50%" style="padding:8px 0;vertical-align:top;">
-                    <p style="margin:0;font-size:10px;letter-spacing:2px;color:#6B6B6B;text-transform:uppercase;">Start Time</p>
-                    <p style="margin:2px 0 0;font-size:15px;font-weight:700;color:#141414;">${startTime}</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2" style="padding:8px 0;vertical-align:top;">
-                    <p style="margin:0;font-size:10px;letter-spacing:2px;color:#6B6B6B;text-transform:uppercase;">Meeting Point</p>
-                    <p style="margin:2px 0 0;font-size:15px;font-weight:700;color:#141414;">${run.meeting_point || "TBA"}</p>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-          ${run.partner ? `
-          <!-- Partner perk -->
-          <tr>
-            <td style="padding:0 32px;">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="border-top:1px dashed #D9D6CF;font-size:0;line-height:0;height:1px;">&nbsp;</td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:16px 32px;text-align:center;">
-              <p style="margin:0;font-size:10px;letter-spacing:2px;color:#6B6B6B;text-transform:uppercase;">Post-Run Perk</p>
-              <p style="margin:4px 0 0;font-size:15px;font-weight:700;color:#C2531F;">
-                ${run.partner}
-              </p>
-              <p style="margin:4px 0 0;font-size:13px;color:#6B6B6B;">15% discount on everything</p>
-            </td>
-          </tr>
-          ` : ""}
-
-          <!-- Reminders -->
-          <tr>
-            <td style="background-color:#FAF9F6;padding:20px 32px;">
-              <p style="margin:0 0 8px;font-size:13px;font-weight:700;color:#141414;text-transform:uppercase;letter-spacing:1px;">Before you run</p>
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="padding:3px 0;font-size:13px;color:#6B6B6B;">
-                    &#x2022;&ensp;Arrive 15 mins early for check-in
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding:3px 0;font-size:13px;color:#6B6B6B;">
-                    &#x2022;&ensp;Carry your own water bottle
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding:3px 0;font-size:13px;color:#6B6B6B;">
-                    &#x2022;&ensp;Wear comfortable running shoes
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding:3px 0;font-size:13px;color:#6B6B6B;">
-                    &#x2022;&ensp;Have fun and pace yourself!
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-          <!-- Terms & Conditions -->
-          <tr>
-            <td style="padding:16px 32px;">
-              <p style="margin:0 0 6px;font-size:11px;font-weight:700;color:#141414;text-transform:uppercase;letter-spacing:1px;">Terms &amp; Conditions</p>
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                <tr><td style="padding:2px 0;font-size:11px;color:#999;">&#x2022;&ensp;This is a free community run. No entry fee is charged.</td></tr>
-                <tr><td style="padding:2px 0;font-size:11px;color:#999;">&#x2022;&ensp;You participate at your own risk. Miles &amp; People is not liable for any injuries, health issues, or loss of personal belongings.</td></tr>
-                <tr><td style="padding:2px 0;font-size:11px;color:#999;">&#x2022;&ensp;By registering, you confirm you are medically fit to participate in physical activity.</td></tr>
-                <tr><td style="padding:2px 0;font-size:11px;color:#999;">&#x2022;&ensp;Photos and videos taken during the event may be used by Miles &amp; People for promotional purposes.</td></tr>
-                <tr><td style="padding:2px 0;font-size:11px;color:#999;">&#x2022;&ensp;The organizers reserve the right to modify the route, timings, or cancel the event due to weather or unforeseen circumstances.</td></tr>
-                <tr><td style="padding:2px 0;font-size:11px;color:#999;">&#x2022;&ensp;This ticket is non-transferable and valid only for the registered participant.</td></tr>
-              </table>
-            </td>
-          </tr>
-
-          <!-- Footer -->
-          <tr>
-            <td style="background-color:#141414;padding:24px 32px;text-align:center;">
-              <p style="margin:0;font-size:14px;color:#FAF9F6;font-weight:600;">
-                See you on the road! &#x1F3C3;
-              </p>
-              <p style="margin:12px 0 0;font-size:11px;color:#6B6B6B;">
-                Miles &amp; People &mdash; Bengaluru Running Community
-              </p>
-              <p style="margin:8px 0 0;font-size:11px;color:#6B6B6B;">
-                Questions? Reply to this email.
-              </p>
-            </td>
-          </tr>
-
-        </table>
-
+  <!-- Partner perk -->
+  <tr><td class="px" style="background:#FFFFFF; padding:30px 36px 8px; font-family:Arial, Helvetica, sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#D7262B; border-radius:14px;"><tr>
+      <td style="padding:20px 22px; color:#FFFFFF;">
+        <div style="font-size:11px; font-weight:bold; letter-spacing:2.5px; color:#FFD9D6;">POST-RUN PERK</div>
+        <div style="margin-top:6px; font-family:Anton, Impact, 'Arial Narrow Bold', sans-serif; font-size:30px; line-height:34px;">15% OFF AT MERIDIAN ICE CREAM</div>
+        <div style="margin-top:6px; font-size:14px; line-height:20px; color:#FFE9E7;">Valid for every runner after Sunday's run. Show this ticket at the counter.</div>
       </td>
-    </tr>
-  </table>
+    </tr></table>
+  </td></tr>
+
+  <!-- Buttons -->
+  <tr><td class="px" style="background:#FFFFFF; padding:22px 36px 6px; font-family:Arial, Helvetica, sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr><td align="center" style="padding:0 0 10px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;"><tr>
+          <td align="center" style="background:#111111; border-radius:999px;">
+            <a href="${calendarUrl}" style="display:block; padding:14px 28px; color:#FFFFFF; font-family:Arial,Helvetica,sans-serif; font-size:13px; font-weight:bold; letter-spacing:1.5px; text-decoration:none;">ADD TO CALENDAR</a>
+          </td>
+        </tr></table>
+      </td></tr>
+      <tr><td align="center" style="padding:0 0 10px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;"><tr>
+          <td align="center" style="border:2px solid #111111; border-radius:999px;">
+            <a href="${WHATSAPP_URL}" style="display:block; padding:12px 28px; color:#111111; font-family:Arial,Helvetica,sans-serif; font-size:13px; font-weight:bold; letter-spacing:1.5px; text-decoration:none;">JOIN WHATSAPP GROUP</a>
+          </td>
+        </tr></table>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <!-- Before you run -->
+  <tr><td class="px" style="background:#FFFFFF; padding:22px 36px 28px; font-family:Arial, Helvetica, sans-serif;">
+    <div style="font-size:12px; font-weight:bold; letter-spacing:2.5px; color:#111111;">BEFORE YOU RUN</div>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:12px;">
+      <tr><td width="26" valign="top" style="font-size:15px; font-weight:bold; color:#C2531F; padding:5px 0;">01</td><td style="font-size:15px; line-height:22px; color:#333333; padding:5px 0;">Carry your own water bottle</td></tr>
+      <tr><td width="26" valign="top" style="font-size:15px; font-weight:bold; color:#C2531F; padding:5px 0;">02</td><td style="font-size:15px; line-height:22px; color:#333333; padding:5px 0;">Wear comfortable running shoes</td></tr>
+      <tr><td width="26" valign="top" style="font-size:15px; font-weight:bold; color:#C2531F; padding:5px 0;">03</td><td style="font-size:15px; line-height:22px; color:#333333; padding:5px 0;">Have fun and run at your own pace</td></tr>
+    </table>
+  </td></tr>
+
+  <!-- Terms -->
+  <tr><td class="px" style="background:#F7F5F1; padding:22px 36px 24px; font-family:Arial, Helvetica, sans-serif; border-top:1px solid #E8E3DA;">
+    <div style="font-size:11px; font-weight:bold; letter-spacing:2px; color:#6B675F;">TERMS &amp; CONDITIONS</div>
+    <div style="margin-top:8px; font-size:12px; line-height:19px; color:#7A766E;">
+      This is a free community run; no entry fee is charged. You participate at your own risk, and Miles &amp; People is not liable for injuries, health issues or loss of belongings. By registering, you confirm you are medically fit for physical activity. Photos and videos from the event may be used by Miles &amp; People for promotion. Organisers may change the route or timings, or cancel due to weather or unforeseen circumstances. This ticket is non-transferable and valid only for the registered participant.
+    </div>
+  </td></tr>
+
+  <!-- Footer -->
+  <tr><td class="px" align="center" style="background:#0A0A0A; border-radius:0 0 18px 18px; padding:28px 36px 30px; font-family:Arial, Helvetica, sans-serif;">
+    <div style="font-family:Anton, Impact, 'Arial Narrow Bold', sans-serif; font-size:26px; line-height:30px; color:#F4F2ED;">SEE YOU ON THE ROAD.</div>
+    <div style="margin-top:6px; font-size:13px; color:#9B968C;">Come for the miles. <span style="color:#E0733D;">Stay for the people.</span></div>
+    <div style="margin-top:16px; font-size:12px; font-weight:bold; letter-spacing:2px;"><a href="${INSTAGRAM_URL}" style="color:#F4F2ED;">INSTAGRAM</a> <span style="color:#555555;">&nbsp;&middot;&nbsp;</span> <a href="${WHATSAPP_URL}" style="color:#F4F2ED;">WHATSAPP</a></div>
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
 </body>
-</html>
-  `.trim();
+</html>`;
 }
