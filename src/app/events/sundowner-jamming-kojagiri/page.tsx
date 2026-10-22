@@ -165,7 +165,7 @@ export default function SundownerEventPage() {
                 SUNDOWNER RUN
               </h3>
               <p className="text-cream/60">
-                A relaxed, inclusive community run as the sun goes down.
+                A relaxed, inclusive 3K community run as the sun goes down.
                 Participation is completely optional — come if you want to move,
                 or skip it and join us for the music.
               </p>

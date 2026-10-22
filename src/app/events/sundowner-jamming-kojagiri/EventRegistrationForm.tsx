@@ -11,7 +11,7 @@ const SOURCES = [
 ];
 
 const ATTENDANCE_OPTIONS = [
-  { value: "Run + Jamming", label: "Run + Jamming", desc: "Join the sundowner run and the jamming session" },
+  { value: "Run + Jamming", label: "Run + Jamming", desc: "Join the 3K sundowner run and the jamming session" },
   { value: "Jamming Only", label: "Jamming Only", desc: "Skip the run, come directly for the music" },
 ];
 
