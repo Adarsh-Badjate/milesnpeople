@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import QRCode from "qrcode";
 
 const SOURCES = [
   "Instagram",
@@ -73,6 +74,18 @@ export function EventRegistrationForm() {
     }
   }
 
+  const [qrDataUrl, setQrDataUrl] = useState("");
+
+  useEffect(() => {
+    if (!success) return;
+    const upiUrl = `upi://pay?pa=adarshjain7972-1@okhdfcbank&pn=Miles%20and%20People&am=${totalPrice}&cu=INR&tn=MNP%20Sundowner%20Event%20004`;
+    QRCode.toDataURL(upiUrl, {
+      width: 280,
+      margin: 2,
+      color: { dark: "#141414", light: "#F4F2ED" },
+    }).then(setQrDataUrl).catch(() => {});
+  }, [success, totalPrice]);
+
   if (success) {
     return (
       <div className="rounded-2xl border border-gold/20 bg-gold/[0.04] p-8 md:p-10 text-center">
@@ -84,18 +97,43 @@ export function EventRegistrationForm() {
             ? `${attendees} spots reserved for ${name}.`
             : `Spot reserved for ${name}.`}
         </p>
+
+        {/* UPI Payment QR */}
+        <div className="mt-8 rounded-xl border border-gold/20 bg-cream/5 p-6">
+          <div className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.12em] text-gold">
+            PAY VIA UPI
+          </div>
+          <p className="mt-2 text-cream/60">
+            Scan the QR code below with any UPI app (GPay, PhonePe, Paytm) to complete your payment.
+          </p>
+          {qrDataUrl && (
+            <div className="mt-4 inline-block rounded-xl overflow-hidden">
+              <img
+                src={qrDataUrl}
+                alt={`UPI QR code for ₹${totalPrice}`}
+                width={280}
+                height={280}
+              />
+            </div>
+          )}
+          <div className="mt-4 font-[family-name:var(--font-anton)] text-3xl text-gold">
+            ₹{totalPrice}
+          </div>
+          <p className="mt-1 text-sm text-cream/40">
+            {attendees} × ₹200 · Your spot is confirmed once payment is received.
+          </p>
+        </div>
+
         <div className="mt-6 rounded-xl border border-cream/10 bg-cream/5 p-5">
           <div className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.12em] text-gold">
             WHAT&apos;S NEXT
           </div>
           <p className="mt-2 text-cream/60">
-            Payment details and venue information will be shared on WhatsApp and
-            email. Keep an eye on your messages.
-          </p>
-          <p className="mt-2 text-sm text-cream/40">
-            Total: ₹{totalPrice} ({attendees} × ₹200)
+            After payment, venue details and event updates will be shared on
+            WhatsApp and email.
           </p>
         </div>
+
         <div className="mt-8 flex flex-wrap justify-center gap-4">
           <a
             href="https://www.instagram.com/milesnpeople/"
@@ -348,7 +386,7 @@ export function EventRegistrationForm() {
       </button>
 
       <p className="mt-4 text-center text-xs text-cream/30">
-        Payment details will be shared after registration.
+        UPI payment QR will be shown after registration.
         Your spot is confirmed once payment is received.
       </p>
     </form>
