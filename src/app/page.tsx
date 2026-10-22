@@ -18,7 +18,7 @@ const FALLBACK_RUNS = [
     map_url: "",
     distances: "3K,5K",
     capacity: 50,
-    status: "open" as const,
+    status: "closed" as const,
     partner: "Meridian Ice Cream",
     partner_perk: "",
   },
@@ -70,71 +70,70 @@ export default async function HomePage() {
             </p>
             <div className="flex flex-wrap gap-3">
               <a
-                href={`/register/${nextRun.id}`}
+                href="/events/sundowner-jamming-kojagiri"
                 className="inline-block rounded-full bg-accent px-7 py-4 font-[family-name:var(--font-barlow-condensed)] text-xl font-extrabold tracking-[0.08em] text-white no-underline hover:bg-accent-hover transition-colors"
               >
-                REGISTER FOR SUNDAY
+                JOIN OUR NEXT EVENT
               </a>
               <a
                 href="#runs"
                 className="inline-block rounded-full border-2 border-ink px-7 py-4 font-[family-name:var(--font-barlow-condensed)] text-xl font-extrabold tracking-[0.08em] text-ink no-underline hover:bg-ink hover:text-bg transition-colors"
               >
-                SEE UPCOMING RUNS
+                SEE PAST RUNS
               </a>
             </div>
           </div>
 
-          {/* Next Run Card */}
+          {/* Next Event Card */}
           <div className="flex min-w-0 flex-1 basis-[400px] flex-col overflow-hidden rounded-[20px] border-2 border-ink bg-white">
-            <div className="relative flex h-[220px] flex-col items-center justify-center bg-ink text-cream">
-              {/* Decorative zigzag background */}
-              <svg viewBox="205 272 390 260" fill="none" className="absolute inset-0 h-full w-full opacity-[0.06]" preserveAspectRatio="xMidYMid slice">
-                <polyline points="240,500 312,305 399,460 487,290 564,515" stroke="#F4F2ED" strokeWidth="26" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+            <div className="relative flex h-[220px] flex-col items-center justify-center bg-[#0A0A0A] text-cream">
+              {/* Decorative moon glow */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="h-[180px] w-[180px] rounded-full bg-[#D4A853]/10 blur-[40px]" />
+              </div>
               <div className="relative z-10 text-center">
-                <div className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.3em] text-cream/50">
-                  NEXT RUN
+                <div className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.3em] text-[#D4A853]">
+                  COMMUNITY EVENT #04
                 </div>
-                <div className="mt-1 font-[family-name:var(--font-anton)] text-[72px] leading-none text-cream">
-                  WEEK {nextRun.week.padStart(3, "0")}
+                <div className="mt-2 font-[family-name:var(--font-anton)] text-[44px] leading-none text-cream">
+                  SUNDOWNER
+                </div>
+                <div className="mt-1 font-[family-name:var(--font-barlow-condensed)] text-base font-bold tracking-[0.1em] text-cream/50">
+                  RUN · JAM · KOJAGIRI
                 </div>
               </div>
             </div>
             <div className="flex flex-col gap-3.5 p-[22px_24px_24px]">
               <div className="font-[family-name:var(--font-anton)] text-4xl leading-none">
-                {formatDate(nextRun.date)} · {nextRun.start_time}
+                SUN, 25 OCT · 6 PM
               </div>
 
-              <Countdown targetDate={`${nextRun.date}T05:30:00+05:30`} />
+              <Countdown targetDate="2026-10-25T18:00:00+05:30" />
 
               <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-[10px_16px] text-base">
                 <div>
-                  <div className="text-[13px] font-semibold tracking-[0.16em] text-muted">LOCATION</div>
-                  {nextRun.map_url ? (
-                    <a href={nextRun.map_url} target="_blank" rel="noopener noreferrer" className="text-ink underline hover:text-accent transition-colors">
-                      {nextRun.meeting_point} ↗
-                    </a>
-                  ) : nextRun.meeting_point}
+                  <div className="text-[13px] font-semibold tracking-[0.16em] text-muted">CITY</div>
+                  Chh. Sambhajinagar
                 </div>
                 <div>
-                  <div className="text-[13px] font-semibold tracking-[0.16em] text-muted">DISTANCE</div>
-                  {nextRun.distances.replace(",", " / ")}
+                  <div className="text-[13px] font-semibold tracking-[0.16em] text-muted">VENUE</div>
+                  Coming soon
                 </div>
                 <div>
                   <div className="text-[13px] font-semibold tracking-[0.16em] text-muted">ENTRY</div>
-                  Free
+                  ₹200 / person
                 </div>
                 <div>
-                  <div className="text-[13px] font-semibold tracking-[0.16em] text-muted">PARTNER</div>
-                  {nextRun.partner || "—"}
+                  <div className="text-[13px] font-semibold tracking-[0.16em] text-muted">INCLUDES</div>
+                  3K Run · Jamming · Milk
                 </div>
               </div>
 
               <a
-                href={`/register/${nextRun.id}`}
+                href="/events/sundowner-jamming-kojagiri"
                 className="block rounded-xl bg-ink py-[15px] text-center font-[family-name:var(--font-barlow-condensed)] text-[19px] font-extrabold tracking-[0.1em] text-white no-underline hover:bg-accent transition-colors"
               >
-                REGISTER NOW
+                JOIN THE EXPERIENCE
               </a>
             </div>
           </div>
@@ -181,29 +180,20 @@ export default async function HomePage() {
         <Marquee items={["3K", "5K", "EVERY PACE WELCOME", "SUNDAYS · 5:30 AM", "NOBODY RUNS ALONE"]} />
       </div>
 
-      {/* Upcoming Runs */}
+      {/* Past Runs */}
       <section id="runs" aria-labelledby="runs-title" className="border-t border-border">
         <div className="mx-auto max-w-[1200px] px-5 py-16">
           <h2 id="runs-title" className="mb-7 font-[family-name:var(--font-anton)] text-5xl font-normal leading-none">
-            UPCOMING RUNS
+            PAST RUNS
           </h2>
           <div className="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-5">
             {runs.map((run) => (
               <div key={run.id} className="flex flex-col gap-2.5 rounded-2xl border border-border bg-white p-[22px]">
-                <div className={`font-[family-name:var(--font-barlow-condensed)] text-[15px] font-extrabold tracking-[0.2em] ${run.status === "open" ? "text-accent" : "text-muted"}`}>
-                  WEEK {run.week} · {run.status === "open" ? "OPEN" : run.status === "closed" ? "CLOSED" : "COMING SOON"}
+                <div className="font-[family-name:var(--font-barlow-condensed)] text-[15px] font-extrabold tracking-[0.2em] text-muted">
+                  WEEK {run.week} · COMPLETED ✓
                 </div>
                 <div className="font-[family-name:var(--font-anton)] text-[30px] leading-none">{formatDate(run.date)}</div>
                 <div className="text-[#3D3D3D]">{run.start_time} · {run.distances.replace(",", " / ")} · {run.meeting_point}</div>
-                {run.status === "open" ? (
-                  <a href={`/register/${run.id}`} className="mt-1.5 self-start rounded-full bg-accent px-[18px] py-[11px] font-[family-name:var(--font-barlow-condensed)] font-extrabold tracking-[0.08em] text-white no-underline hover:bg-accent-hover transition-colors">
-                    REGISTER
-                  </a>
-                ) : (
-                  <button type="button" disabled className="mt-1.5 self-start rounded-full border-2 border-border bg-white px-[18px] py-[11px] font-[family-name:var(--font-barlow-condensed)] text-[17px] font-extrabold tracking-[0.08em] text-muted cursor-not-allowed">
-                    NOTIFY ME
-                  </button>
-                )}
               </div>
             ))}
           </div>

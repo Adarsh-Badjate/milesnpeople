@@ -15,7 +15,7 @@ const FALLBACK_RUN = {
   map_url: "",
   distances: "3K,5K",
   capacity: 50,
-  status: "open" as const,
+  status: "closed" as const,
   partner: "Meridian Ice Cream",
   partner_perk: "",
 };

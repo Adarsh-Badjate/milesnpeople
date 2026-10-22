@@ -51,7 +51,7 @@ export function Header() {
             </a>
           ))}
           <a
-            href="/register/3"
+            href="/events/sundowner-jamming-kojagiri#register"
             className="inline-block rounded-full bg-accent px-[22px] py-3 font-[family-name:var(--font-barlow-condensed)] text-base font-extrabold tracking-[0.08em] text-white no-underline hover:bg-accent-hover transition-colors"
           >
             REGISTER
