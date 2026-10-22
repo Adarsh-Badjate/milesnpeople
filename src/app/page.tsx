@@ -141,6 +141,41 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Featured Event Banner */}
+      <section aria-labelledby="featured-event" className="bg-dark text-cream">
+        <div className="mx-auto max-w-[1200px] px-5 py-12">
+          <a
+            href="/events/sundowner-jamming-kojagiri"
+            className="group block overflow-hidden rounded-2xl border border-[#D4A853]/20 bg-[#D4A853]/[0.04] p-8 md:p-10 no-underline transition-colors hover:border-[#D4A853]/40"
+          >
+            <div className="flex flex-wrap items-center justify-between gap-6">
+              <div>
+                <div className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.3em] text-[#D4A853]">
+                  COMMUNITY EVENT #04 · 25 OCT 2026
+                </div>
+                <h2
+                  id="featured-event"
+                  className="mt-2 font-[family-name:var(--font-anton)] text-[clamp(28px,4vw,48px)] font-normal leading-[0.95] text-cream"
+                >
+                  MNP SUNDOWNER — RUN, JAM &amp; KOJAGIRI
+                </h2>
+                <p className="mt-3 max-w-[520px] text-cream/60">
+                  An evening of music, moonlight, and community. Run with us or skip the run — join the jamming directly. ₹200 per person.
+                </p>
+              </div>
+              <div className="flex flex-col items-end gap-3">
+                <span className="inline-block rounded-full bg-[#D4A853] px-7 py-3.5 font-[family-name:var(--font-barlow-condensed)] text-lg font-extrabold tracking-[0.08em] text-[#0A0A0A] group-hover:bg-[#C49A47] transition-colors">
+                  JOIN THE EXPERIENCE →
+                </span>
+                <span className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.1em] text-cream/40">
+                  CHH. SAMBHAJINAGAR · ₹200
+                </span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </section>
+
       {/* Marquee */}
       <div className="relative -rotate-[1.2deg] bg-accent py-3 text-white text-xl">
         <Marquee items={["3K", "5K", "EVERY PACE WELCOME", "SUNDAYS · 5:30 AM", "NOBODY RUNS ALONE"]} />

@@ -10,6 +10,19 @@ import {
 
 const INDIAN_PHONE = /^[6-9]\d{9}$/;
 
+// Special events that are not stored in the Runs sheet
+const SPECIAL_EVENTS: Record<
+  string,
+  { title: string; capacity: number; status: "open" | "closed" | "soon"; week: string }
+> = {
+  "sundowner-004": {
+    title: "MNP Sundowner — Run, Jam & Kojagiri",
+    capacity: 80,
+    status: "open",
+    week: "004",
+  },
+};
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -30,6 +43,8 @@ export async function POST(req: NextRequest) {
       whatsapp_optin,
     } = body;
 
+    const isSpecialEvent = run_id in SPECIAL_EVENTS;
+
     // Validation
     const errors: string[] = [];
     if (!run_id) errors.push("Run ID is required");
@@ -37,12 +52,21 @@ export async function POST(req: NextRequest) {
     if (!whatsapp || !INDIAN_PHONE.test(whatsapp.replace(/\s/g, "")))
       errors.push("Valid Indian mobile number required");
     if (!email || !email.includes("@")) errors.push("Valid email required");
-    if (!age_group) errors.push("Age group is required");
-    if (!distance || !["3K", "5K"].includes(distance))
-      errors.push("Distance must be 3K or 5K");
-    if (!experience) errors.push("Experience is required");
-    if (!gender || !["Male", "Female"].includes(gender))
-      errors.push("Gender is required");
+
+    if (isSpecialEvent) {
+      // Relaxed validation for special events
+      if (!distance || !["Run + Jamming", "Jamming Only"].includes(distance))
+        errors.push("Please select your attendance preference");
+    } else {
+      // Standard run validation
+      if (!age_group) errors.push("Age group is required");
+      if (!distance || !["3K", "5K"].includes(distance))
+        errors.push("Distance must be 3K or 5K");
+      if (!experience) errors.push("Experience is required");
+      if (!gender || !["Male", "Female"].includes(gender))
+        errors.push("Gender is required");
+    }
+
     if (waiver !== "true" && waiver !== true)
       errors.push("Waiver must be accepted");
 
@@ -50,31 +74,51 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: errors.join("; ") }, { status: 400 });
     }
 
-    // Check run exists and is open
-    const run = await getRunById(run_id);
-    if (!run) {
-      return NextResponse.json({ error: "Run not found" }, { status: 404 });
+    // Resolve event/run config
+    let capacity: number;
+    let status: string;
+    let week: string;
+
+    if (isSpecialEvent) {
+      const evt = SPECIAL_EVENTS[run_id];
+      capacity = evt.capacity;
+      status = evt.status;
+      week = evt.week;
+    } else {
+      const run = await getRunById(run_id);
+      if (!run) {
+        return NextResponse.json({ error: "Run not found" }, { status: 404 });
+      }
+      if (run.status !== "open") {
+        return NextResponse.json({ error: "Registrations are not open for this run" }, { status: 400 });
+      }
+      capacity = run.capacity;
+      status = run.status;
+      week = run.week;
     }
-    if (run.status !== "open") {
-      return NextResponse.json({ error: "Registrations are not open for this run" }, { status: 400 });
+
+    if (status !== "open") {
+      return NextResponse.json({ error: "Registrations are not open" }, { status: 400 });
     }
 
     // Check capacity
     const count = await getRegistrationCount(run_id);
-    if (count >= run.capacity) {
-      return NextResponse.json({ error: "This run is full" }, { status: 400 });
+    if (count >= capacity) {
+      return NextResponse.json({ error: "This event is full" }, { status: 400 });
     }
 
-    // Check gender-based capacity (60% male, 40% female)
-    const maleLimit = Math.floor(run.capacity * 0.60);
-    const femaleLimit = run.capacity - maleLimit;
-    const genderCount = await getGenderCount(run_id, gender);
-    const genderLimit = gender === "Male" ? maleLimit : femaleLimit;
-    if (genderCount >= genderLimit) {
-      return NextResponse.json(
-        { error: `${gender} spots are full for this run. ${genderLimit} spots were available.` },
-        { status: 400 }
-      );
+    // Gender-based capacity only for regular runs
+    if (!isSpecialEvent) {
+      const maleLimit = Math.floor(capacity * 0.622);
+      const femaleLimit = capacity - maleLimit;
+      const genderCount = await getGenderCount(run_id, gender);
+      const genderLimit = gender === "Male" ? maleLimit : femaleLimit;
+      if (genderCount >= genderLimit) {
+        return NextResponse.json(
+          { error: `${gender} spots are full for this run. ${genderLimit} spots were available.` },
+          { status: 400 }
+        );
+      }
     }
 
     // Check duplicate
@@ -82,7 +126,7 @@ export async function POST(req: NextRequest) {
     const dup = await isDuplicate(run_id, cleanPhone);
     if (dup) {
       return NextResponse.json(
-        { error: "You have already registered for this run with this WhatsApp number" },
+        { error: "You have already registered for this event with this phone number" },
         { status: 409 }
       );
     }
@@ -98,12 +142,12 @@ export async function POST(req: NextRequest) {
       whatsapp: cleanPhone,
       email: email.trim(),
       instagram: (instagram || "").trim(),
-      age_group,
+      age_group: age_group || "",
       gender: gender || "",
       distance,
-      experience,
-      emergency_name: emergency_name.trim(),
-      emergency_phone: emergency_phone.replace(/\s/g, ""),
+      experience: experience || "",
+      emergency_name: (emergency_name || "").trim(),
+      emergency_phone: (emergency_phone || "").replace(/\s/g, ""),
       source: source || "",
       waiver: "TRUE",
       whatsapp_optin: whatsapp_optin ? "TRUE" : "",
@@ -114,7 +158,7 @@ export async function POST(req: NextRequest) {
       bib,
       name: name.trim(),
       run_id,
-      week: run.week,
+      week,
     });
   } catch (err) {
     console.error("Registration error:", err);

@@ -4,9 +4,9 @@ import { useState } from "react";
 import { Logo } from "./Logo";
 
 const NAV_LINKS = [
+  { href: "/events/sundowner-jamming-kojagiri", label: "Sundowner Event" },
   { href: "/#runs", label: "Runs" },
   { href: "/#how", label: "How it works" },
-  { href: "/#partners", label: "Partners" },
   { href: "/#faq", label: "FAQ" },
 ];
 
