@@ -78,7 +78,7 @@ export default function SundownerEventPage() {
               </span>
               <span>
                 <span className="text-gold">TIME</span>{" "}
-                <span className="text-cream">6 PM — 9 PM</span>
+                <span className="text-cream">5 PM — 8 PM</span>
               </span>
               <span>
                 <span className="text-gold">CITY</span>{" "}
@@ -281,7 +281,7 @@ export default function SundownerEventPage() {
               REGISTER NOW.
             </h2>
             <p className="mb-10 text-center text-cream/50">
-              Sun, 25 Oct · 6 PM — 9 PM · ₹200 per person · Venue details shared with registered
+              Sun, 25 Oct · 5 PM — 8 PM · ₹200 per person · Venue details shared with registered
               participants
             </p>
             <EventRegistrationForm />
