@@ -133,7 +133,9 @@ export default function SundownerEventPage() {
           items={[
             "SUNDOWNER RUN",
             "OPEN JAMMING",
-            "KOJAGIRI PURNIMA",
+            "ICE BREAKER ACTIVITIES",
+            "KOJAGIRI MILK",
+            "NEW FRIENDS",
             "₹200 ENTRY",
             "25 OCT · CSN",
             "MUSIC · MOONLIGHT · MEMORIES",
@@ -237,26 +239,48 @@ export default function SundownerEventPage() {
             </div>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {[
               {
-                text: "Come directly for the jamming — the run is optional.",
+                icon: "🏃",
+                title: "Sundowner Run",
+                text: "A relaxed 3K community run as the sun goes down. Completely optional.",
               },
               {
-                text: "Attend solo or bring your friends. Everyone's welcome.",
+                icon: "🎸",
+                title: "Open Jamming",
+                text: "Music, singing, instruments — the main event. Play or just vibe.",
               },
               {
-                text: "It's community-led, not a competition. No experience needed.",
+                icon: "🎯",
+                title: "Ice Breaker Activities",
+                text: "Fun activities to help you break the ice and connect with new people.",
               },
               {
-                text: "₹200 per person. Includes event access and Kojagiri milk.",
+                icon: "🥛",
+                title: "Kojagiri Milk",
+                text: "Traditional Kojagiri milk under the full moon — included with entry.",
+              },
+              {
+                icon: "🤝",
+                title: "New Friends",
+                text: "Come solo or with friends. Leave with a bigger circle. That's the MNP way.",
+              },
+              {
+                icon: "✨",
+                title: "₹200 — All Inclusive",
+                text: "Run, jam, activities, milk, and memories. Everything's included.",
               },
             ].map((item) => (
               <div
-                key={item.text}
+                key={item.title}
                 className="rounded-xl border border-cream/10 bg-cream/[0.03] px-5 py-5"
               >
-                <p className="text-cream/80">{item.text}</p>
+                <div className="text-2xl">{item.icon}</div>
+                <div className="mt-2 font-[family-name:var(--font-barlow-condensed)] text-lg font-extrabold tracking-[0.06em] text-cream">
+                  {item.title}
+                </div>
+                <p className="mt-1 text-cream/60">{item.text}</p>
               </div>
             ))}
           </div>
@@ -363,7 +387,7 @@ export default function SundownerEventPage() {
               },
               {
                 q: "What does the ₹200 entry include?",
-                a: "Event access (run and/or jamming) and Kojagiri milk.",
+                a: "Everything — the sundowner run, open jamming, ice breaker activities, and Kojagiri milk.",
               },
               {
                 q: "Where is the venue?",
