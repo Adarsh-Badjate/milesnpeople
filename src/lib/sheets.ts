@@ -6,7 +6,10 @@ function getAuth() {
       client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
       private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
     },
-    scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+    scopes: [
+      "https://www.googleapis.com/auth/spreadsheets",
+      "https://www.googleapis.com/auth/drive.file",
+    ],
   });
 }
 
@@ -81,13 +84,14 @@ export interface Registration {
   waiver: string;
   whatsapp_optin: string;
   checked_in: string;
+  payment_screenshot: string;
 }
 
 export async function getRegistrations(runId?: string): Promise<Registration[]> {
   const sheets = getSheets();
   const res = await sheets.spreadsheets.values.get({
     spreadsheetId: SHEET_ID,
-    range: "Registrations!A2:Q",
+    range: "Registrations!A2:R",
   });
   const rows = res.data.values || [];
   const all = rows.map((r) => ({
@@ -108,6 +112,7 @@ export async function getRegistrations(runId?: string): Promise<Registration[]> 
     waiver: r[14] || "",
     whatsapp_optin: r[15] || "",
     checked_in: r[16] || "",
+    payment_screenshot: r[17] || "",
   }));
   if (runId) return all.filter((r) => r.run_id === runId);
   return all;
@@ -134,12 +139,12 @@ export async function getNextBib(runId: string): Promise<string> {
   return String(num).padStart(4, "0");
 }
 
-export async function appendRegistration(data: Omit<Registration, "timestamp" | "checked_in">) {
+export async function appendRegistration(data: Omit<Registration, "timestamp" | "checked_in" | "payment_screenshot">) {
   const sheets = getSheets();
   const timestamp = new Date().toISOString();
   await sheets.spreadsheets.values.append({
     spreadsheetId: SHEET_ID,
-    range: "Registrations!A:Q",
+    range: "Registrations!A:R",
     valueInputOption: "USER_ENTERED",
     requestBody: {
       values: [[
@@ -160,9 +165,62 @@ export async function appendRegistration(data: Omit<Registration, "timestamp" | 
         data.waiver,
         data.whatsapp_optin,
         "",
+        "",
       ]],
     },
   });
+}
+
+export async function uploadPaymentScreenshot(
+  runId: string,
+  whatsapp: string,
+  fileBuffer: Buffer,
+  mimeType: string,
+  fileName: string
+): Promise<string> {
+  const drive = google.drive({ version: "v3", auth: getAuth() });
+
+  // Upload file to Google Drive
+  const driveRes = await drive.files.create({
+    requestBody: {
+      name: `payment_${runId}_${whatsapp}_${Date.now()}_${fileName}`,
+      parents: process.env.GOOGLE_DRIVE_FOLDER_ID ? [process.env.GOOGLE_DRIVE_FOLDER_ID] : undefined,
+    },
+    media: {
+      mimeType,
+      body: require("stream").Readable.from(fileBuffer),
+    },
+    fields: "id,webViewLink",
+  });
+
+  const fileId = driveRes.data.id!;
+  const viewLink = driveRes.data.webViewLink!;
+
+  // Make file viewable by anyone with the link
+  await drive.permissions.create({
+    fileId,
+    requestBody: { role: "reader", type: "anyone" },
+  });
+
+  // Update the registration row with the screenshot link
+  const sheets = getSheets();
+  const res = await sheets.spreadsheets.values.get({
+    spreadsheetId: SHEET_ID,
+    range: "Registrations!A2:R",
+  });
+  const rows = res.data.values || [];
+  const rowIndex = rows.findIndex((r) => r[1] === runId && r[4] === whatsapp);
+  if (rowIndex !== -1) {
+    const sheetRow = rowIndex + 2;
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: SHEET_ID,
+      range: `Registrations!R${sheetRow}`,
+      valueInputOption: "USER_ENTERED",
+      requestBody: { values: [[viewLink]] },
+    });
+  }
+
+  return viewLink;
 }
 
 export async function updateCheckedIn(runId: string, bib: string, checkedIn: boolean) {

@@ -29,6 +29,7 @@ interface Registration {
   waiver: string;
   whatsapp_optin: string;
   checked_in: string;
+  payment_screenshot: string;
 }
 
 export default function AdminPage() {
@@ -154,6 +155,7 @@ export default function AdminPage() {
   const fiveK = filtered.filter((r) => r.distance === "5K").length;
   const firstTimers = filtered.filter((r) => r.experience === "First time running").length;
   const checkedIn = filtered.filter((r) => r.checked_in === "TRUE").length;
+  const paid = filtered.filter((r) => r.payment_screenshot).length;
   const capacity = runs.find((r) => r.id === selectedRun)?.capacity || 0;
 
   if (!authed) {
@@ -225,12 +227,13 @@ export default function AdminPage() {
         </div>
 
         {/* Stat tiles */}
-        <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-5">
+        <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-6">
           {[
             { label: "Registered", value: `${total}${capacity ? ` / ${capacity}` : ""}` },
             { label: "3K", value: threeK },
             { label: "5K", value: fiveK },
             { label: "First-timers", value: firstTimers },
+            { label: "Paid", value: paid },
             { label: "Checked in", value: checkedIn },
           ].map((stat) => (
             <div
@@ -263,6 +266,7 @@ export default function AdminPage() {
                 <th className="px-4 py-3 font-[family-name:var(--font-barlow-condensed)] font-bold tracking-[0.1em]">WHATSAPP</th>
                 <th className="px-4 py-3 font-[family-name:var(--font-barlow-condensed)] font-bold tracking-[0.1em]">AGE</th>
                 <th className="px-4 py-3 font-[family-name:var(--font-barlow-condensed)] font-bold tracking-[0.1em]">EXPERIENCE</th>
+                <th className="px-4 py-3 font-[family-name:var(--font-barlow-condensed)] font-bold tracking-[0.1em]">PAID</th>
                 <th className="px-4 py-3 font-[family-name:var(--font-barlow-condensed)] font-bold tracking-[0.1em]">CHECKED IN</th>
               </tr>
             </thead>
@@ -280,6 +284,22 @@ export default function AdminPage() {
                   <td className="px-4 py-3">{reg.age_group}</td>
                   <td className="px-4 py-3 text-cream/60">{reg.experience}</td>
                   <td className="px-4 py-3">
+                    {reg.payment_screenshot ? (
+                      <a
+                        href={reg.payment_screenshot}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="rounded-lg bg-green-500/20 text-green-400 px-3 py-1.5 text-xs font-bold hover:bg-green-500/30 transition-colors inline-block"
+                      >
+                        ✓ VIEW
+                      </a>
+                    ) : (
+                      <span className="rounded-lg bg-cream/10 text-cream/40 px-3 py-1.5 text-xs font-bold inline-block">
+                        PENDING
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
                     <button
                       onClick={() => toggleCheckIn(reg.bib, reg.checked_in)}
                       className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-colors min-h-[36px] ${
@@ -295,7 +315,7 @@ export default function AdminPage() {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-cream/40">
+                  <td colSpan={8} className="px-4 py-8 text-center text-cream/40">
                     No registrations found
                   </td>
                 </tr>

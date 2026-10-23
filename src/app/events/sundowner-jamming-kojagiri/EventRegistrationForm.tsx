@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import QRCode from "qrcode";
 
 const SOURCES = [
@@ -75,6 +75,10 @@ export function EventRegistrationForm() {
   }
 
   const [qrDataUrl, setQrDataUrl] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [uploadDone, setUploadDone] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!success) return;
@@ -85,6 +89,36 @@ export function EventRegistrationForm() {
       color: { dark: "#141414", light: "#F4F2ED" },
     }).then(setQrDataUrl).catch(() => {});
   }, [success, totalPrice]);
+
+  async function handleScreenshotUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadError("");
+    setUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("run_id", "sundowner-004");
+      formData.append("whatsapp", phone);
+
+      const res = await fetch("/api/upload-payment", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setUploadError(data.error || "Upload failed");
+      } else {
+        setUploadDone(true);
+      }
+    } catch {
+      setUploadError("Network error. Please try again.");
+    }
+    setUploading(false);
+  }
 
   if (success) {
     return (
@@ -101,7 +135,7 @@ export function EventRegistrationForm() {
         {/* UPI Payment QR */}
         <div className="mt-8 rounded-xl border border-gold/20 bg-cream/5 p-6">
           <div className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.12em] text-gold">
-            PAY VIA UPI
+            STEP 1 — PAY VIA UPI
           </div>
           <p className="mt-2 text-cream/60">
             Scan the QR code below with any UPI app (GPay, PhonePe, Paytm) to complete your payment.
@@ -120,8 +154,47 @@ export function EventRegistrationForm() {
             ₹{totalPrice}
           </div>
           <p className="mt-1 text-sm text-cream/40">
-            {attendees} × ₹200 · Your spot is confirmed once payment is received.
+            {attendees} × ₹200
           </p>
+        </div>
+
+        {/* Payment Screenshot Upload */}
+        <div className="mt-6 rounded-xl border border-gold/20 bg-cream/5 p-6">
+          <div className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.12em] text-gold">
+            STEP 2 — UPLOAD PAYMENT SCREENSHOT
+          </div>
+          <p className="mt-2 text-cream/60">
+            After paying, take a screenshot of the payment success screen and upload it below.
+          </p>
+
+          {uploadDone ? (
+            <div className="mt-4 rounded-lg bg-green-500/10 border border-green-500/30 px-4 py-3 text-green-400">
+              Payment screenshot uploaded! Your spot is confirmed.
+            </div>
+          ) : (
+            <>
+              {uploadError && (
+                <div className="mt-4 rounded-lg bg-red-500/10 border border-red-500/30 px-4 py-3 text-red-400 text-sm">
+                  {uploadError}
+                </div>
+              )}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleScreenshotUpload}
+                className="hidden"
+              />
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploading}
+                className="mt-4 rounded-xl bg-gold px-8 py-3 font-[family-name:var(--font-barlow-condensed)] text-lg font-extrabold tracking-[0.08em] text-dark transition-colors hover:bg-gold-hover disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px]"
+              >
+                {uploading ? "UPLOADING..." : "UPLOAD SCREENSHOT"}
+              </button>
+            </>
+          )}
         </div>
 
         <div className="mt-6 rounded-xl border border-cream/10 bg-cream/5 p-5">
