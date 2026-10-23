@@ -141,14 +141,27 @@ export async function getRegistrations(runId?: string): Promise<Registration[]> 
   return results.flat();
 }
 
+// For special events, experience stores attendee count per registration
+function getAttendees(reg: Registration): number {
+  const n = parseInt(reg.experience, 10);
+  return n > 0 ? n : 1;
+}
+
 export async function getRegistrationCount(runId: string): Promise<number> {
   const regs = await getRegistrations(runId);
+  if (runId && runId in EVENT_SHEET_TABS) {
+    return regs.reduce((sum, r) => sum + getAttendees(r), 0);
+  }
   return regs.length;
 }
 
 export async function getGenderCount(runId: string, gender: string): Promise<number> {
   const regs = await getRegistrations(runId);
-  return regs.filter((r) => r.gender.toLowerCase() === gender.toLowerCase()).length;
+  const filtered = regs.filter((r) => r.gender.toLowerCase() === gender.toLowerCase());
+  if (runId && runId in EVENT_SHEET_TABS) {
+    return filtered.reduce((sum, r) => sum + getAttendees(r), 0);
+  }
+  return filtered.length;
 }
 
 export async function isDuplicate(runId: string, whatsapp: string): Promise<boolean> {

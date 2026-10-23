@@ -107,10 +107,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Registrations are not open" }, { status: 400 });
     }
 
+    // Number of spots this registration needs
+    const numAttendees = isSpecialEvent ? Math.max(1, parseInt(experience, 10) || 1) : 1;
+
     // Check capacity
     const count = await getRegistrationCount(run_id);
-    if (count >= capacity) {
-      return NextResponse.json({ error: "This event is full" }, { status: 400 });
+    if (count + numAttendees > capacity) {
+      const spotsLeft = capacity - count;
+      return NextResponse.json(
+        { error: spotsLeft <= 0 ? "This event is full" : `Only ${spotsLeft} spot${spotsLeft === 1 ? "" : "s"} left` },
+        { status: 400 }
+      );
     }
 
     // Gender-based capacity
@@ -127,9 +134,10 @@ export async function POST(req: NextRequest) {
       }
       const genderCount = await getGenderCount(run_id, gender);
       const genderLimit = gender === "Male" ? maleLimit : femaleLimit;
-      if (genderCount >= genderLimit) {
+      if (genderCount + numAttendees > genderLimit) {
+        const spotsLeft = genderLimit - genderCount;
         return NextResponse.json(
-          { error: `${gender} spots are full for this event. ${genderLimit} spots were available.` },
+          { error: spotsLeft <= 0 ? `${gender} spots are full` : `Only ${spotsLeft} ${gender.toLowerCase()} spot${spotsLeft === 1 ? "" : "s"} left` },
           { status: 400 }
         );
       }
