@@ -19,6 +19,15 @@ function getSheets() {
 
 const SHEET_ID = process.env.SHEET_ID!;
 
+// Map special event run_ids to their own sheet tabs
+const EVENT_SHEET_TABS: Record<string, string> = {
+  "sundowner-004": "Sundowner 004",
+};
+
+function getSheetTab(runId?: string): string {
+  return (runId && EVENT_SHEET_TABS[runId]) || "Registrations";
+}
+
 // ── Runs ──
 
 export interface Run {
@@ -87,14 +96,8 @@ export interface Registration {
   payment_screenshot: string;
 }
 
-export async function getRegistrations(runId?: string): Promise<Registration[]> {
-  const sheets = getSheets();
-  const res = await sheets.spreadsheets.values.get({
-    spreadsheetId: SHEET_ID,
-    range: "Registrations!A2:R",
-  });
-  const rows = res.data.values || [];
-  const all = rows.map((r) => ({
+function parseRows(rows: string[][]): Registration[] {
+  return rows.map((r) => ({
     timestamp: r[0] || "",
     run_id: r[1] || "",
     bib: r[2] || "",
@@ -114,8 +117,31 @@ export async function getRegistrations(runId?: string): Promise<Registration[]> 
     checked_in: r[16] || "",
     payment_screenshot: r[17] || "",
   }));
-  if (runId) return all.filter((r) => r.run_id === runId);
-  return all;
+}
+
+export async function getRegistrations(runId?: string): Promise<Registration[]> {
+  const sheets = getSheets();
+
+  if (runId) {
+    const tab = getSheetTab(runId);
+    const res = await sheets.spreadsheets.values.get({
+      spreadsheetId: SHEET_ID,
+      range: `${tab}!A2:R`,
+    });
+    return parseRows(res.data.values || []).filter((r) => r.run_id === runId);
+  }
+
+  // No runId — merge all tabs
+  const allTabs = ["Registrations", ...Object.values(EVENT_SHEET_TABS)];
+  const results = await Promise.all(
+    allTabs.map((tab) =>
+      sheets.spreadsheets.values
+        .get({ spreadsheetId: SHEET_ID, range: `${tab}!A2:R` })
+        .then((res) => parseRows(res.data.values || []))
+        .catch(() => [] as Registration[])
+    )
+  );
+  return results.flat();
 }
 
 export async function getRegistrationCount(runId: string): Promise<number> {
@@ -141,10 +167,11 @@ export async function getNextBib(runId: string): Promise<string> {
 
 export async function appendRegistration(data: Omit<Registration, "timestamp" | "checked_in" | "payment_screenshot">) {
   const sheets = getSheets();
+  const tab = getSheetTab(data.run_id);
   const timestamp = new Date().toISOString();
   await sheets.spreadsheets.values.append({
     spreadsheetId: SHEET_ID,
-    range: "Registrations!A:R",
+    range: `${tab}!A:R`,
     valueInputOption: "USER_ENTERED",
     requestBody: {
       values: [[
@@ -204,9 +231,10 @@ export async function uploadPaymentScreenshot(
 
   // Update the registration row with the screenshot link
   const sheets = getSheets();
+  const tab = getSheetTab(runId);
   const res = await sheets.spreadsheets.values.get({
     spreadsheetId: SHEET_ID,
-    range: "Registrations!A2:R",
+    range: `${tab}!A2:R`,
   });
   const rows = res.data.values || [];
   const rowIndex = rows.findIndex((r) => r[1] === runId && r[4] === whatsapp);
@@ -214,7 +242,7 @@ export async function uploadPaymentScreenshot(
     const sheetRow = rowIndex + 2;
     await sheets.spreadsheets.values.update({
       spreadsheetId: SHEET_ID,
-      range: `Registrations!R${sheetRow}`,
+      range: `${tab}!R${sheetRow}`,
       valueInputOption: "USER_ENTERED",
       requestBody: { values: [[viewLink]] },
     });
@@ -225,9 +253,10 @@ export async function uploadPaymentScreenshot(
 
 export async function updateCheckedIn(runId: string, bib: string, checkedIn: boolean) {
   const sheets = getSheets();
+  const tab = getSheetTab(runId);
   const res = await sheets.spreadsheets.values.get({
     spreadsheetId: SHEET_ID,
-    range: "Registrations!A2:Q",
+    range: `${tab}!A2:R`,
   });
   const rows = res.data.values || [];
   const rowIndex = rows.findIndex((r) => r[1] === runId && r[2] === bib);
@@ -235,7 +264,7 @@ export async function updateCheckedIn(runId: string, bib: string, checkedIn: boo
   const sheetRow = rowIndex + 2; // 1-indexed + header
   await sheets.spreadsheets.values.update({
     spreadsheetId: SHEET_ID,
-    range: `Registrations!Q${sheetRow}`,
+    range: `${tab}!Q${sheetRow}`,
     valueInputOption: "USER_ENTERED",
     requestBody: { values: [[checkedIn ? "TRUE" : ""]] },
   });
