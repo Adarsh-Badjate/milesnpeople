@@ -215,6 +215,9 @@ export function EventRegistrationForm() {
                   height={280}
                 />
               </div>
+              <p className="mt-3 text-sm text-cream/50">
+                Or pay directly to <span className="text-cream font-semibold">7447561810</span> via any UPI app
+              </p>
             </div>
           )}
         </div>
