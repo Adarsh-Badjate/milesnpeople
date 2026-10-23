@@ -222,13 +222,13 @@ export function EventRegistrationForm() {
           )}
         </div>
 
-        {/* Transaction ID */}
+        {/* Payment confirmation */}
         <div className="mt-6 rounded-xl border border-gold/20 bg-cream/5 p-6">
           <div className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.12em] text-gold">
-            STEP 2 — ENTER TRANSACTION ID
+            STEP 2 — CONFIRM PAYMENT
           </div>
           <p className="mt-2 text-cream/60">
-            After paying, enter your UPI transaction ID / UTR number to confirm.
+            After paying, enter the name on your UPI account to confirm.
           </p>
 
           {txnError && (
@@ -241,7 +241,7 @@ export function EventRegistrationForm() {
               type="text"
               value={txnId}
               onChange={(e) => setTxnId(e.target.value)}
-              placeholder="e.g. 432109876543"
+              placeholder="e.g. Adarsh Badjate"
               className="flex-1 rounded-xl border border-cream/20 bg-cream/5 px-4 py-3 text-cream placeholder:text-cream/30 focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold transition-colors"
             />
             <button
