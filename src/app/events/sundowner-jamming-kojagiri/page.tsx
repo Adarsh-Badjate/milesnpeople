@@ -86,7 +86,7 @@ export default function SundownerEventPage() {
               </span>
               <span>
                 <span className="text-gold">ENTRY</span>{" "}
-                <span className="text-cream">₹200 / PERSON</span>
+                <span className="text-cream">₹200 / PERSON <span className="text-gold/70">(EARLY BIRD)</span></span>
               </span>
               <span>
                 <span className="text-gold">VENUE</span>{" "}
@@ -100,7 +100,7 @@ export default function SundownerEventPage() {
                 href="#register"
                 className="inline-block rounded-full bg-gold px-8 py-4 font-[family-name:var(--font-barlow-condensed)] text-xl font-extrabold tracking-[0.08em] text-dark no-underline hover:bg-gold-hover transition-colors"
               >
-                JOIN THE EXPERIENCE — ₹200
+                EARLY BIRD — ₹200
               </a>
               <a
                 href="#register"
@@ -136,7 +136,7 @@ export default function SundownerEventPage() {
             "ICE BREAKER ACTIVITIES",
             "KOJAGIRI MILK",
             "NEW FRIENDS",
-            "₹200 ENTRY",
+            "₹200 EARLY BIRD",
             "25 OCT · CSN",
             "MUSIC · MOONLIGHT · MEMORIES",
           ]}
@@ -268,8 +268,8 @@ export default function SundownerEventPage() {
               },
               {
                 icon: "✨",
-                title: "₹200 — All Inclusive",
-                text: "Run, jam, activities, milk, and memories. Everything's included.",
+                title: "₹200 Early Bird — All Inclusive",
+                text: "Run, jam, activities, milk, and memories. Everything's included at early bird price.",
               },
             ].map((item) => (
               <div
@@ -305,7 +305,7 @@ export default function SundownerEventPage() {
               REGISTER NOW.
             </h2>
             <p className="mb-10 text-center text-cream/50">
-              Sun, 25 Oct · 5 PM — 8 PM · ₹200 per person · Venue details shared with registered
+              Sun, 25 Oct · 5 PM — 8 PM · ₹200 per person (early bird) · Venue details shared with registered
               participants
             </p>
             <EventRegistrationForm />
