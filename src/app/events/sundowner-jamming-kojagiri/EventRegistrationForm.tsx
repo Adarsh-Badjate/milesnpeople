@@ -26,6 +26,7 @@ export function EventRegistrationForm() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [instagram, setInstagram] = useState("");
+  const [gender, setGender] = useState("");
   const [attendance, setAttendance] = useState("");
   const [attendees, setAttendees] = useState(1);
   const [source, setSource] = useState("");
@@ -51,7 +52,7 @@ export function EventRegistrationForm() {
           email,
           instagram,
           age_group: "",
-          gender: "",
+          gender,
           distance: attendance,
           experience: String(attendees),
           emergency_name: "",
@@ -111,7 +112,7 @@ export function EventRegistrationForm() {
           email,
           instagram,
           age_group: "",
-          gender: "",
+          gender,
           distance: attendance,
           experience: String(attendees),
           emergency_name: "",
@@ -347,6 +348,32 @@ export function EventRegistrationForm() {
             className={inputClass}
           />
         </div>
+
+        <div>
+          <label className={labelClass}>GENDER *</label>
+          <div className="grid grid-cols-2 gap-3">
+            {["Male", "Female"].map((g) => (
+              <button
+                key={g}
+                type="button"
+                onClick={() => setGender(g)}
+                className={`rounded-xl border-2 px-4 py-3 text-center transition-colors ${
+                  gender === g
+                    ? "border-gold bg-gold/10"
+                    : "border-cream/20 hover:border-cream/40"
+                }`}
+              >
+                <div
+                  className={`font-[family-name:var(--font-barlow-condensed)] text-lg font-extrabold tracking-[0.04em] ${
+                    gender === g ? "text-gold" : "text-cream/70"
+                  }`}
+                >
+                  {g}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Your Experience */}
@@ -486,7 +513,7 @@ export function EventRegistrationForm() {
 
       <button
         type="submit"
-        disabled={loading || !consent || !attendance}
+        disabled={loading || !consent || !attendance || !gender}
         className="mt-8 w-full rounded-xl bg-gold py-4 font-[family-name:var(--font-barlow-condensed)] text-xl font-extrabold tracking-[0.08em] text-dark transition-colors hover:bg-gold-hover disabled:opacity-50 disabled:cursor-not-allowed min-h-[52px]"
       >
         {loading

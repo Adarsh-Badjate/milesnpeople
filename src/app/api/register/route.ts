@@ -13,13 +13,15 @@ const INDIAN_PHONE = /^[6-9]\d{9}$/;
 // Special events that are not stored in the Runs sheet
 const SPECIAL_EVENTS: Record<
   string,
-  { title: string; capacity: number; status: "open" | "closed" | "soon"; week: string }
+  { title: string; capacity: number; status: "open" | "closed" | "soon"; week: string; maleLimit?: number; femaleLimit?: number }
 > = {
   "sundowner-004": {
     title: "MNP Sundowner — Run, Jam & Kojagiri",
-    capacity: 80,
+    capacity: 40,
     status: "open",
     week: "004",
+    maleLimit: 24,
+    femaleLimit: 16,
   },
 };
 
@@ -56,9 +58,11 @@ export async function POST(req: NextRequest) {
     if (!email || !email.includes("@")) errors.push("Valid email required");
 
     if (isSpecialEvent) {
-      // Relaxed validation for special events
+      // Special event validation
       if (!distance || !["Run + Jamming", "Jamming Only"].includes(distance))
         errors.push("Please select your attendance preference");
+      if (!gender || !["Male", "Female"].includes(gender))
+        errors.push("Gender is required");
     } else {
       // Standard run validation
       if (!age_group) errors.push("Age group is required");
@@ -109,15 +113,23 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "This event is full" }, { status: 400 });
     }
 
-    // Gender-based capacity only for regular runs
-    if (!isSpecialEvent) {
-      const maleLimit = Math.floor(capacity * 0.622);
-      const femaleLimit = capacity - maleLimit;
+    // Gender-based capacity
+    if (gender) {
+      let maleLimit: number;
+      let femaleLimit: number;
+      if (isSpecialEvent) {
+        const evt = SPECIAL_EVENTS[run_id];
+        maleLimit = evt.maleLimit ?? Math.floor(capacity * 0.6);
+        femaleLimit = evt.femaleLimit ?? capacity - maleLimit;
+      } else {
+        maleLimit = Math.floor(capacity * 0.622);
+        femaleLimit = capacity - maleLimit;
+      }
       const genderCount = await getGenderCount(run_id, gender);
       const genderLimit = gender === "Male" ? maleLimit : femaleLimit;
       if (genderCount >= genderLimit) {
         return NextResponse.json(
-          { error: `${gender} spots are full for this run. ${genderLimit} spots were available.` },
+          { error: `${gender} spots are full for this event. ${genderLimit} spots were available.` },
           { status: 400 }
         );
       }
