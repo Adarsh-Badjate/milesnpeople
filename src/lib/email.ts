@@ -16,6 +16,144 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// ── Sundowner Promo Email ──
+
+export function generateSundownerPromoHTML(firstName: string): string {
+  const registerUrl = `${SITE_URL}/events/sundowner-jamming-kojagiri`;
+
+  return `<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="x-apple-disable-message-reformatting">
+<meta name="color-scheme" content="dark">
+<title>MNP Sundowner #04</title>
+<style>
+  body { margin:0; padding:0; background:#0A0A0A; }
+  table { border-collapse:collapse; }
+  img { border:0; display:block; outline:none; text-decoration:none; }
+  a { text-decoration:none; }
+  @media only screen and (max-width:620px) {
+    .container { width:100% !important; }
+    .px { padding-left:20px !important; padding-right:20px !important; }
+    .hero-title { font-size:42px !important; line-height:44px !important; }
+    .btn { display:block !important; width:100% !important; }
+  }
+</style>
+</head>
+<body style="margin:0; padding:0; background:#0A0A0A;">
+
+<div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#0A0A0A;">You ran with us. Now jam with us. Sunday, 25 Oct. Only 40 spots.</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0A0A0A;">
+<tr><td align="center" style="padding:28px 12px;">
+
+<table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px;">
+
+  <!-- Header -->
+  <tr><td class="px" style="background:#111111; border-radius:18px 18px 0 0; padding:26px 36px 22px; font-family:Arial, Helvetica, sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td style="font-family:'Arial Black', Arial, Helvetica, sans-serif; font-weight:900; font-size:20px; letter-spacing:2px; color:#F4F2ED;">MILES <span style="color:#C8A55C;">&amp;</span> PEOPLE</td>
+      <td align="right" style="font-family:Arial, Helvetica, sans-serif; font-weight:bold; font-size:11px; letter-spacing:2.5px; color:#C8A55C;">EVENT #04</td>
+    </tr></table>
+  </td></tr>
+  <tr><td style="background:#C8A55C; height:4px; line-height:4px; font-size:4px;">&nbsp;</td></tr>
+
+  <!-- Hero -->
+  <tr><td class="px" style="background:#111111; padding:40px 36px 32px; font-family:Arial, Helvetica, sans-serif; color:#F4F2ED;">
+    <div style="font-size:12px; font-weight:bold; letter-spacing:3px; color:#C8A55C;">SUNDAY, 25 OCTOBER &middot; 5 PM &ndash; 8 PM</div>
+    <div class="hero-title" style="margin-top:14px; font-family:Impact, 'Arial Narrow Bold', sans-serif; font-size:52px; line-height:54px; letter-spacing:0.5px; color:#F4F2ED;">YOU RAN WITH US.<br><span style="color:#C8A55C;">NOW JAM WITH US.</span></div>
+    <div style="margin-top:16px; font-size:16px; line-height:24px; color:#CFCAC0;">Hey ${firstName}, you've been part of the MNP community runs. This Sunday, we're doing something bigger — a full evening experience under the full moon.</div>
+  </td></tr>
+
+  <!-- What's happening -->
+  <tr><td class="px" style="background:#111111; padding:0 36px 36px; font-family:Arial, Helvetica, sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#1A1A1A; border-radius:14px; border:1px solid #2A2A2A;">
+      <tr><td style="padding:24px 24px 6px;">
+        <div style="font-size:11px; font-weight:bold; letter-spacing:3px; color:#C8A55C;">WHAT&rsquo;S HAPPENING</div>
+      </td></tr>
+      <tr><td style="padding:16px 24px 6px;">
+        <div style="font-size:15px; line-height:22px; color:#F4F2ED;">&#127939; <strong>Sundowner Run</strong></div>
+        <div style="font-size:14px; line-height:20px; color:#9B968C;">A chill 3K as the sun sets. Optional.</div>
+      </td></tr>
+      <tr><td style="padding:12px 24px 6px;">
+        <div style="font-size:15px; line-height:22px; color:#F4F2ED;">&#127928; <strong>Open Jamming</strong></div>
+        <div style="font-size:14px; line-height:20px; color:#9B968C;">Live music, guitars, singing under the sky.</div>
+      </td></tr>
+      <tr><td style="padding:12px 24px 6px;">
+        <div style="font-size:15px; line-height:22px; color:#F4F2ED;">&#127919; <strong>Ice Breaker Activities</strong></div>
+        <div style="font-size:14px; line-height:20px; color:#9B968C;">Meet new people. No awkward silences.</div>
+      </td></tr>
+      <tr><td style="padding:12px 24px 6px;">
+        <div style="font-size:15px; line-height:22px; color:#F4F2ED;">&#129371; <strong>Kojagiri Milk</strong></div>
+        <div style="font-size:14px; line-height:20px; color:#9B968C;">Traditional, under the full moon. Included.</div>
+      </td></tr>
+      <tr><td style="padding:12px 24px 20px;">
+        <div style="font-size:15px; line-height:22px; color:#F4F2ED;">&#129309; <strong>New Friends</strong></div>
+        <div style="font-size:14px; line-height:20px; color:#9B968C;">Come alone, leave with a circle.</div>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <!-- Price -->
+  <tr><td class="px" style="background:#111111; padding:0 36px 36px; font-family:Arial, Helvetica, sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#C8A55C; border-radius:14px;">
+      <tr><td align="center" style="padding:28px 24px;">
+        <div style="font-size:11px; font-weight:bold; letter-spacing:3px; color:#111111;">EARLY BIRD &middot; ALL INCLUSIVE</div>
+        <div style="margin-top:8px; font-family:Impact, 'Arial Narrow Bold', sans-serif; font-size:56px; line-height:56px; color:#111111;">&rupee;199</div>
+        <div style="margin-top:8px; font-size:14px; color:#333;">Run. Jamming. Activities. Milk. Everything.</div>
+        <div style="margin-top:4px; font-size:13px; font-weight:bold; color:#111;">This price won&rsquo;t come back.</div>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <!-- Scarcity -->
+  <tr><td class="px" style="background:#111111; padding:0 36px 36px; font-family:Arial, Helvetica, sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#1A1A1A; border-radius:14px; border:1px solid #C8A55C33;">
+      <tr><td align="center" style="padding:24px;">
+        <div style="font-size:11px; font-weight:bold; letter-spacing:3px; color:#C8A55C;">&#9888;&#65039; LIMITED CAPACITY</div>
+        <div style="margin-top:12px; font-family:Impact, 'Arial Narrow Bold', sans-serif; font-size:42px; line-height:42px; color:#F4F2ED;">ONLY 40 SPOTS</div>
+        <div style="margin-top:10px; font-size:14px; line-height:20px; color:#9B968C;">24 men &middot; 16 women &middot; No waitlist<br>Once full, registration closes automatically.</div>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <!-- CTA -->
+  <tr><td class="px" align="center" style="background:#111111; padding:0 36px 36px; font-family:Arial, Helvetica, sans-serif;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;"><tr>
+      <td align="center" class="btn" style="background:#C8A55C; border-radius:999px;">
+        <a href="${registerUrl}" style="display:block; padding:18px 48px; color:#111111; font-family:Arial,Helvetica,sans-serif; font-size:16px; font-weight:bold; letter-spacing:1.5px; text-decoration:none;">REGISTER NOW &rarr;</a>
+      </td>
+    </tr></table>
+    <div style="margin-top:12px; font-size:13px; color:#9B968C;">2 days left. Don&rsquo;t miss this one.</div>
+  </td></tr>
+
+  <!-- Venue -->
+  <tr><td class="px" style="background:#111111; padding:0 36px 36px; font-family:Arial, Helvetica, sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #2A2A2A;">
+      <tr><td style="padding:24px 0 0;">
+        <div style="font-size:11px; font-weight:bold; letter-spacing:3px; color:#C8A55C;">VENUE</div>
+        <div style="margin-top:8px; font-size:16px; font-weight:bold; color:#F4F2ED;">The E47 Cafe</div>
+        <div style="margin-top:4px; font-size:14px; color:#9B968C;">MIDC Industrial Area, Chilkalthana<br>Chhatrapati Sambhajinagar</div>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <!-- Footer -->
+  <tr><td class="px" align="center" style="background:#0A0A0A; border-radius:0 0 18px 18px; padding:28px 36px 30px; font-family:Arial, Helvetica, sans-serif; border-top:1px solid #1A1A1A;">
+    <div style="font-family:Impact, 'Arial Narrow Bold', sans-serif; font-size:22px; line-height:26px; color:#F4F2ED;">YOU CAME FOR THE MILES.<br><span style="color:#C8A55C;">STAY FOR THE MUSIC.</span></div>
+    <div style="margin-top:16px; font-size:12px; font-weight:bold; letter-spacing:2px;"><a href="${INSTAGRAM_URL}" style="color:#F4F2ED;">INSTAGRAM</a> <span style="color:#555555;">&nbsp;&middot;&nbsp;</span> <a href="${WHATSAPP_URL}" style="color:#F4F2ED;">WHATSAPP</a></div>
+    <div style="margin-top:12px; font-size:11px; color:#555555;">You&rsquo;re receiving this because you&rsquo;ve attended a Miles &amp; People community event.</div>
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>`;
+}
+
 // ── Generate QR as Buffer ──
 
 export async function generateQRBuffer(
