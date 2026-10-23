@@ -90,7 +90,14 @@ export default function SundownerEventPage() {
               </span>
               <span>
                 <span className="text-gold">VENUE</span>{" "}
-                <span className="text-cream/50">COMING SOON</span>
+                <a
+                  href="https://maps.google.com/?q=The+E47+Cafe+Aurangabad+Chilkalthana+Chhatrapati+Sambhajinagar"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cream underline underline-offset-2 hover:text-gold transition-colors"
+                >
+                  THE E47 CAFE
+                </a>
               </span>
             </div>
 
@@ -305,8 +312,7 @@ export default function SundownerEventPage() {
               REGISTER NOW.
             </h2>
             <p className="mb-10 text-center text-cream/50">
-              Sun, 25 Oct · 5 PM — 8 PM · ₹199 per person (early bird) · Venue details shared with registered
-              participants
+              Sun, 25 Oct · 5 PM — 8 PM · ₹199 per person (early bird) · The E47 Cafe, CSN
             </p>
             <EventRegistrationForm />
           </div>
@@ -391,7 +397,7 @@ export default function SundownerEventPage() {
               },
               {
                 q: "Where is the venue?",
-                a: "The venue in Chhatrapati Sambhajinagar is being finalized. Venue details will be shared with registered participants.",
+                a: "The E47 Cafe, MIDC Industrial Area, Chilkalthana, Chhatrapati Sambhajinagar, Maharashtra 431006.",
               },
               {
                 q: "Can I bring friends?",
