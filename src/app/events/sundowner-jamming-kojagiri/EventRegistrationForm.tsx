@@ -228,7 +228,7 @@ export function EventRegistrationForm() {
             STEP 2 — CONFIRM PAYMENT
           </div>
           <p className="mt-2 text-cream/60">
-            After paying, enter the name on your UPI account to confirm.
+            Enter the name on your UPI account to lock your ticket. This is mandatory.
           </p>
 
           {txnError && (
@@ -236,21 +236,21 @@ export function EventRegistrationForm() {
               {txnError}
             </div>
           )}
-          <div className="mt-4 flex gap-3">
+          <div className="mt-4 space-y-3">
             <input
               type="text"
               value={txnId}
               onChange={(e) => setTxnId(e.target.value)}
               placeholder="e.g. Adarsh Badjate"
-              className="flex-1 rounded-xl border border-cream/20 bg-cream/5 px-4 py-3 text-cream placeholder:text-cream/30 focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold transition-colors"
+              className="w-full rounded-xl border border-cream/20 bg-cream/5 px-4 py-3 text-cream placeholder:text-cream/30 focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold transition-colors"
             />
             <button
               type="button"
               onClick={handleTxnSubmit}
               disabled={submittingTxn || !txnId.trim()}
-              className="rounded-xl bg-gold px-6 py-3 font-[family-name:var(--font-barlow-condensed)] font-extrabold tracking-[0.08em] text-dark transition-colors hover:bg-gold-hover disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px]"
+              className="w-full rounded-xl bg-gold py-4 font-[family-name:var(--font-barlow-condensed)] text-xl font-extrabold tracking-[0.08em] text-dark transition-colors hover:bg-gold-hover disabled:opacity-50 disabled:cursor-not-allowed min-h-[52px]"
             >
-              {submittingTxn ? "..." : "CONFIRM"}
+              {submittingTxn ? "CONFIRMING..." : "CONFIRM & LOCK TICKET"}
             </button>
           </div>
         </div>
