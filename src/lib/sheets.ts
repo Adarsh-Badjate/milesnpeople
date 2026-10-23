@@ -6,10 +6,7 @@ function getAuth() {
       client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
       private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
     },
-    scopes: [
-      "https://www.googleapis.com/auth/spreadsheets",
-      "https://www.googleapis.com/auth/drive.file",
-    ],
+    scopes: ["https://www.googleapis.com/auth/spreadsheets"],
   });
 }
 
@@ -93,7 +90,7 @@ export interface Registration {
   waiver: string;
   whatsapp_optin: string;
   checked_in: string;
-  payment_screenshot: string;
+  transaction_id: string;
 }
 
 function parseRows(rows: string[][]): Registration[] {
@@ -115,7 +112,7 @@ function parseRows(rows: string[][]): Registration[] {
     waiver: r[14] || "",
     whatsapp_optin: r[15] || "",
     checked_in: r[16] || "",
-    payment_screenshot: r[17] || "",
+    transaction_id: r[17] || "",
   }));
 }
 
@@ -165,7 +162,7 @@ export async function getNextBib(runId: string): Promise<string> {
   return String(num).padStart(4, "0");
 }
 
-export async function appendRegistration(data: Omit<Registration, "timestamp" | "checked_in" | "payment_screenshot">) {
+export async function appendRegistration(data: Omit<Registration, "timestamp" | "checked_in" | "transaction_id">) {
   const sheets = getSheets();
   const tab = getSheetTab(data.run_id);
   const timestamp = new Date().toISOString();
@@ -198,38 +195,7 @@ export async function appendRegistration(data: Omit<Registration, "timestamp" | 
   });
 }
 
-export async function uploadPaymentScreenshot(
-  runId: string,
-  whatsapp: string,
-  fileBuffer: Buffer,
-  mimeType: string,
-  fileName: string
-): Promise<string> {
-  const drive = google.drive({ version: "v3", auth: getAuth() });
-
-  // Upload file to Google Drive
-  const driveRes = await drive.files.create({
-    requestBody: {
-      name: `payment_${runId}_${whatsapp}_${Date.now()}_${fileName}`,
-      parents: process.env.GOOGLE_DRIVE_FOLDER_ID ? [process.env.GOOGLE_DRIVE_FOLDER_ID] : undefined,
-    },
-    media: {
-      mimeType,
-      body: require("stream").Readable.from(fileBuffer),
-    },
-    fields: "id,webViewLink",
-  });
-
-  const fileId = driveRes.data.id!;
-  const viewLink = driveRes.data.webViewLink!;
-
-  // Make file viewable by anyone with the link
-  await drive.permissions.create({
-    fileId,
-    requestBody: { role: "reader", type: "anyone" },
-  });
-
-  // Update the registration row with the screenshot link
+export async function updateTransactionId(runId: string, whatsapp: string, transactionId: string) {
   const sheets = getSheets();
   const tab = getSheetTab(runId);
   const res = await sheets.spreadsheets.values.get({
@@ -238,17 +204,14 @@ export async function uploadPaymentScreenshot(
   });
   const rows = res.data.values || [];
   const rowIndex = rows.findIndex((r) => r[1] === runId && r[4] === whatsapp);
-  if (rowIndex !== -1) {
-    const sheetRow = rowIndex + 2;
-    await sheets.spreadsheets.values.update({
-      spreadsheetId: SHEET_ID,
-      range: `${tab}!R${sheetRow}`,
-      valueInputOption: "USER_ENTERED",
-      requestBody: { values: [[viewLink]] },
-    });
-  }
-
-  return viewLink;
+  if (rowIndex === -1) return;
+  const sheetRow = rowIndex + 2;
+  await sheets.spreadsheets.values.update({
+    spreadsheetId: SHEET_ID,
+    range: `${tab}!R${sheetRow}`,
+    valueInputOption: "USER_ENTERED",
+    requestBody: { values: [[transactionId]] },
+  });
 }
 
 export async function updateCheckedIn(runId: string, bib: string, checkedIn: boolean) {

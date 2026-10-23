@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import QRCode from "qrcode";
 
 const SOURCES = [
@@ -75,10 +75,10 @@ export function EventRegistrationForm() {
   }
 
   const [qrDataUrl, setQrDataUrl] = useState("");
-  const [uploading, setUploading] = useState(false);
-  const [uploadDone, setUploadDone] = useState(false);
-  const [uploadError, setUploadError] = useState("");
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [txnId, setTxnId] = useState("");
+  const [submittingTxn, setSubmittingTxn] = useState(false);
+  const [txnDone, setTxnDone] = useState(false);
+  const [txnError, setTxnError] = useState("");
 
   useEffect(() => {
     if (!success) return;
@@ -90,34 +90,33 @@ export function EventRegistrationForm() {
     }).then(setQrDataUrl).catch(() => {});
   }, [success, totalPrice]);
 
-  async function handleScreenshotUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  async function handleTxnSubmit() {
+    if (!txnId.trim()) return;
 
-    setUploadError("");
-    setUploading(true);
+    setTxnError("");
+    setSubmittingTxn(true);
 
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("run_id", "sundowner-004");
-      formData.append("whatsapp", phone);
-
-      const res = await fetch("/api/upload-payment", {
+      const res = await fetch("/api/submit-payment", {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          run_id: "sundowner-004",
+          whatsapp: phone,
+          transaction_id: txnId.trim(),
+        }),
       });
 
       const data = await res.json();
       if (!res.ok) {
-        setUploadError(data.error || "Upload failed");
+        setTxnError(data.error || "Something went wrong");
       } else {
-        setUploadDone(true);
+        setTxnDone(true);
       }
     } catch {
-      setUploadError("Network error. Please try again.");
+      setTxnError("Network error. Please try again.");
     }
-    setUploading(false);
+    setSubmittingTxn(false);
   }
 
   if (success) {
@@ -158,41 +157,43 @@ export function EventRegistrationForm() {
           </p>
         </div>
 
-        {/* Payment Screenshot Upload */}
+        {/* Transaction ID */}
         <div className="mt-6 rounded-xl border border-gold/20 bg-cream/5 p-6">
           <div className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.12em] text-gold">
-            STEP 2 — UPLOAD PAYMENT SCREENSHOT
+            STEP 2 — ENTER TRANSACTION ID
           </div>
           <p className="mt-2 text-cream/60">
-            After paying, take a screenshot of the payment success screen and upload it below.
+            After paying, enter your UPI transaction ID / UTR number below to confirm payment.
           </p>
 
-          {uploadDone ? (
+          {txnDone ? (
             <div className="mt-4 rounded-lg bg-green-500/10 border border-green-500/30 px-4 py-3 text-green-400">
-              Payment screenshot uploaded! Your spot is confirmed.
+              Transaction ID submitted! Your spot is confirmed.
             </div>
           ) : (
             <>
-              {uploadError && (
+              {txnError && (
                 <div className="mt-4 rounded-lg bg-red-500/10 border border-red-500/30 px-4 py-3 text-red-400 text-sm">
-                  {uploadError}
+                  {txnError}
                 </div>
               )}
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleScreenshotUpload}
-                className="hidden"
-              />
-              <button
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={uploading}
-                className="mt-4 rounded-xl bg-gold px-8 py-3 font-[family-name:var(--font-barlow-condensed)] text-lg font-extrabold tracking-[0.08em] text-dark transition-colors hover:bg-gold-hover disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px]"
-              >
-                {uploading ? "UPLOADING..." : "UPLOAD SCREENSHOT"}
-              </button>
+              <div className="mt-4 flex gap-3">
+                <input
+                  type="text"
+                  value={txnId}
+                  onChange={(e) => setTxnId(e.target.value)}
+                  placeholder="e.g. 432109876543"
+                  className="flex-1 rounded-xl border border-cream/20 bg-cream/5 px-4 py-3 text-cream placeholder:text-cream/30 focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold transition-colors"
+                />
+                <button
+                  type="button"
+                  onClick={handleTxnSubmit}
+                  disabled={submittingTxn || !txnId.trim()}
+                  className="rounded-xl bg-gold px-6 py-3 font-[family-name:var(--font-barlow-condensed)] font-extrabold tracking-[0.08em] text-dark transition-colors hover:bg-gold-hover disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px]"
+                >
+                  {submittingTxn ? "..." : "SUBMIT"}
+                </button>
+              </div>
             </>
           )}
         </div>

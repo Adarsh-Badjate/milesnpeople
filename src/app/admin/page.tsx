@@ -29,7 +29,7 @@ interface Registration {
   waiver: string;
   whatsapp_optin: string;
   checked_in: string;
-  payment_screenshot: string;
+  transaction_id: string;
 }
 
 export default function AdminPage() {
@@ -155,7 +155,7 @@ export default function AdminPage() {
   const fiveK = filtered.filter((r) => r.distance === "5K").length;
   const firstTimers = filtered.filter((r) => r.experience === "First time running").length;
   const checkedIn = filtered.filter((r) => r.checked_in === "TRUE").length;
-  const paid = filtered.filter((r) => r.payment_screenshot).length;
+  const paid = filtered.filter((r) => r.transaction_id).length;
   const capacity = runs.find((r) => r.id === selectedRun)?.capacity || 0;
 
   if (!authed) {
@@ -284,15 +284,10 @@ export default function AdminPage() {
                   <td className="px-4 py-3">{reg.age_group}</td>
                   <td className="px-4 py-3 text-cream/60">{reg.experience}</td>
                   <td className="px-4 py-3">
-                    {reg.payment_screenshot ? (
-                      <a
-                        href={reg.payment_screenshot}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="rounded-lg bg-green-500/20 text-green-400 px-3 py-1.5 text-xs font-bold hover:bg-green-500/30 transition-colors inline-block"
-                      >
-                        ✓ VIEW
-                      </a>
+                    {reg.transaction_id ? (
+                      <span className="rounded-lg bg-green-500/20 text-green-400 px-3 py-1.5 text-xs font-bold inline-block" title={reg.transaction_id}>
+                        ✓ {reg.transaction_id}
+                      </span>
                     ) : (
                       <span className="rounded-lg bg-cream/10 text-cream/40 px-3 py-1.5 text-xs font-bold inline-block">
                         PENDING
