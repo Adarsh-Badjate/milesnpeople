@@ -7,11 +7,11 @@ import { EventRegistrationForm } from "./EventRegistrationForm";
 export const metadata: Metadata = {
   title: "MNP Sundowner — Run, Jam & Kojagiri | Miles & People",
   description:
-    "An evening of music, moonlight, and community. Join MilesNPeople's 4th community event in Chhatrapati Sambhajinagar. Sunday, 25 October 2026. ₹200 entry includes Kojagiri milk.",
+    "An evening of music, moonlight, and community. Join MilesNPeople's 4th community event in Chhatrapati Sambhajinagar. Sunday, 25 October 2026. ₹199 entry includes Kojagiri milk.",
   openGraph: {
     title: "MNP Sundowner — Run, Jam & Kojagiri | Miles & People",
     description:
-      "Three community runs. One BIG community experience. Music, moonlight, new connections, and Kojagiri vibes. ₹200 entry.",
+      "Three community runs. One BIG community experience. Music, moonlight, new connections, and Kojagiri vibes. ₹199 entry.",
   },
 };
 
@@ -86,7 +86,7 @@ export default function SundownerEventPage() {
               </span>
               <span>
                 <span className="text-gold">ENTRY</span>{" "}
-                <span className="text-cream">₹200 / PERSON <span className="text-gold/70">(EARLY BIRD)</span></span>
+                <span className="text-cream">₹199 / PERSON <span className="text-gold/70">(EARLY BIRD)</span></span>
               </span>
               <span>
                 <span className="text-gold">VENUE</span>{" "}
@@ -100,7 +100,7 @@ export default function SundownerEventPage() {
                 href="#register"
                 className="inline-block rounded-full bg-gold px-8 py-4 font-[family-name:var(--font-barlow-condensed)] text-xl font-extrabold tracking-[0.08em] text-dark no-underline hover:bg-gold-hover transition-colors"
               >
-                EARLY BIRD — ₹200
+                EARLY BIRD — ₹199
               </a>
               <a
                 href="#register"
@@ -136,7 +136,7 @@ export default function SundownerEventPage() {
             "ICE BREAKER ACTIVITIES",
             "KOJAGIRI MILK",
             "NEW FRIENDS",
-            "₹200 EARLY BIRD",
+            "₹199 EARLY BIRD",
             "25 OCT · CSN",
             "MUSIC · MOONLIGHT · MEMORIES",
           ]}
@@ -208,7 +208,7 @@ export default function SundownerEventPage() {
               </h3>
               <p className="text-cream/60">
                 Celebrate the full-moon occasion together. Kojagiri milk is
-                included with your ₹200 entry — a tradition shared under the
+                included with your ₹199 entry — a tradition shared under the
                 open sky.
               </p>
               <div className="mt-auto pt-2 font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.12em] text-gold/60">
@@ -268,7 +268,7 @@ export default function SundownerEventPage() {
               },
               {
                 icon: "✨",
-                title: "₹200 Early Bird — All Inclusive",
+                title: "₹199 Early Bird — All Inclusive",
                 text: "Run, jam, activities, milk, and memories. Everything's included at early bird price.",
               },
             ].map((item) => (
@@ -305,7 +305,7 @@ export default function SundownerEventPage() {
               REGISTER NOW.
             </h2>
             <p className="mb-10 text-center text-cream/50">
-              Sun, 25 Oct · 5 PM — 8 PM · ₹200 per person (early bird) · Venue details shared with registered
+              Sun, 25 Oct · 5 PM — 8 PM · ₹199 per person (early bird) · Venue details shared with registered
               participants
             </p>
             <EventRegistrationForm />
@@ -386,7 +386,7 @@ export default function SundownerEventPage() {
                 a: 'Yes! Select "Jamming Only" when you register. The open jamming is the main event.',
               },
               {
-                q: "What does the ₹200 entry include?",
+                q: "What does the ₹199 entry include?",
                 a: "Everything — the sundowner run, open jamming, ice breaker activities, and Kojagiri milk.",
               },
               {

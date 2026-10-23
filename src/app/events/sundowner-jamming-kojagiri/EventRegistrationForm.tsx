@@ -32,7 +32,7 @@ export function EventRegistrationForm() {
   const [consent, setConsent] = useState(false);
   const [whatsappOptin, setWhatsappOptin] = useState(true);
 
-  const totalPrice = attendees * 200;
+  const totalPrice = attendees * 199;
 
   // Step 1: Validate form (check capacity, duplicates) without saving
   async function handleSubmit(e: React.FormEvent) {
@@ -197,7 +197,7 @@ export function EventRegistrationForm() {
             ₹{totalPrice}
           </div>
           <p className="mt-1 text-sm text-cream/40">
-            {attendees} × ₹200
+            {attendees} × ₹199
           </p>
 
           <a
@@ -420,7 +420,7 @@ export function EventRegistrationForm() {
                 ₹{totalPrice}
               </div>
               <div className="text-xs text-cream/40">
-                {attendees} × ₹200
+                {attendees} × ₹199
               </div>
             </div>
           </div>
