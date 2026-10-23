@@ -17,9 +17,10 @@ const ATTENDANCE_OPTIONS = [
 ];
 
 export function EventRegistrationForm() {
+  // Step: "form" → "payment" → "confirmed"
+  const [step, setStep] = useState<"form" | "payment" | "confirmed">("form");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -33,6 +34,7 @@ export function EventRegistrationForm() {
 
   const totalPrice = attendees * 200;
 
+  // Step 1: Validate form (check capacity, duplicates) without saving
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
@@ -57,6 +59,7 @@ export function EventRegistrationForm() {
           source,
           waiver: consent ? "true" : "false",
           whatsapp_optin: whatsappOptin,
+          validate_only: true,
         }),
       });
 
@@ -67,30 +70,30 @@ export function EventRegistrationForm() {
         return;
       }
 
-      setSuccess(true);
+      setStep("payment");
     } catch {
       setError("Network error. Please try again.");
-      setLoading(false);
     }
+    setLoading(false);
   }
 
   const [qrDataUrl, setQrDataUrl] = useState("");
   const [txnId, setTxnId] = useState("");
   const [submittingTxn, setSubmittingTxn] = useState(false);
-  const [txnDone, setTxnDone] = useState(false);
   const [txnError, setTxnError] = useState("");
 
   const upiUrl = `upi://pay?pa=adarshjain7972-1@okhdfcbank&pn=Miles%20and%20People&am=${totalPrice}&cu=INR&tn=MNP%20Sundowner%20Event%20004`;
 
   useEffect(() => {
-    if (!success) return;
+    if (step !== "payment") return;
     QRCode.toDataURL(upiUrl, {
       width: 280,
       margin: 2,
       color: { dark: "#141414", light: "#F4F2ED" },
     }).then(setQrDataUrl).catch(() => {});
-  }, [success, upiUrl]);
+  }, [step, upiUrl]);
 
+  // Step 2: Save registration with transaction ID
   async function handleTxnSubmit() {
     if (!txnId.trim()) return;
 
@@ -98,12 +101,24 @@ export function EventRegistrationForm() {
     setSubmittingTxn(true);
 
     try {
-      const res = await fetch("/api/submit-payment", {
+      const res = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           run_id: "sundowner-004",
+          name,
           whatsapp: phone,
+          email,
+          instagram,
+          age_group: "",
+          gender: "",
+          distance: attendance,
+          experience: String(attendees),
+          emergency_name: "",
+          emergency_phone: "",
+          source,
+          waiver: consent ? "true" : "false",
+          whatsapp_optin: whatsappOptin,
           transaction_id: txnId.trim(),
         }),
       });
@@ -112,7 +127,7 @@ export function EventRegistrationForm() {
       if (!res.ok) {
         setTxnError(data.error || "Something went wrong");
       } else {
-        setTxnDone(true);
+        setStep("confirmed");
       }
     } catch {
       setTxnError("Network error. Please try again.");
@@ -120,7 +135,8 @@ export function EventRegistrationForm() {
     setSubmittingTxn(false);
   }
 
-  if (success) {
+  // ── CONFIRMED ──
+  if (step === "confirmed") {
     return (
       <div className="rounded-2xl border border-gold/20 bg-gold/[0.04] p-8 md:p-10 text-center">
         <div className="font-[family-name:var(--font-anton)] text-5xl text-gold">
@@ -130,6 +146,46 @@ export function EventRegistrationForm() {
           {attendees > 1
             ? `${attendees} spots reserved for ${name}.`
             : `Spot reserved for ${name}.`}
+        </p>
+
+        <div className="mt-6 rounded-xl border border-cream/10 bg-cream/5 p-5">
+          <div className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.12em] text-gold">
+            WHAT&apos;S NEXT
+          </div>
+          <p className="mt-2 text-cream/60">
+            Venue details and event updates will be shared on WhatsApp and email.
+          </p>
+        </div>
+
+        <div className="mt-8 flex flex-wrap justify-center gap-4">
+          <a
+            href="https://www.instagram.com/milesnpeople/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block rounded-full border border-cream/20 px-6 py-3 font-[family-name:var(--font-barlow-condensed)] font-bold tracking-[0.08em] text-cream no-underline hover:border-gold hover:text-gold transition-colors"
+          >
+            FOLLOW ON INSTAGRAM
+          </a>
+          <a
+            href="/"
+            className="inline-block rounded-full border border-cream/20 px-6 py-3 font-[family-name:var(--font-barlow-condensed)] font-bold tracking-[0.08em] text-cream no-underline hover:border-cream/40 transition-colors"
+          >
+            BACK TO HOME
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  // ── PAYMENT ──
+  if (step === "payment") {
+    return (
+      <div className="rounded-2xl border border-gold/20 bg-gold/[0.04] p-8 md:p-10 text-center">
+        <div className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.12em] text-gold">
+          ALMOST THERE, {name.split(" ")[0].toUpperCase()}!
+        </div>
+        <p className="mt-2 text-cream/60">
+          Complete payment to confirm your spot.
         </p>
 
         {/* UPI Payment */}
@@ -144,7 +200,6 @@ export function EventRegistrationForm() {
             {attendees} × ₹200
           </p>
 
-          {/* One-tap pay button */}
           <a
             href={upiUrl}
             className="mt-5 inline-block w-full rounded-xl bg-gold py-4 font-[family-name:var(--font-barlow-condensed)] text-xl font-extrabold tracking-[0.08em] text-dark transition-colors hover:bg-gold-hover text-center no-underline min-h-[52px]"
@@ -155,7 +210,6 @@ export function EventRegistrationForm() {
             Opens GPay, PhonePe, Paytm or any UPI app
           </p>
 
-          {/* QR fallback for desktop */}
           {qrDataUrl && (
             <details className="mt-5">
               <summary className="cursor-pointer text-sm text-cream/50 hover:text-cream/70 transition-colors">
@@ -179,66 +233,31 @@ export function EventRegistrationForm() {
             STEP 2 — ENTER TRANSACTION ID
           </div>
           <p className="mt-2 text-cream/60">
-            After paying, enter your UPI transaction ID / UTR number below to confirm payment.
+            After paying, enter your UPI transaction ID / UTR number to confirm.
           </p>
 
-          {txnDone ? (
-            <div className="mt-4 rounded-lg bg-green-500/10 border border-green-500/30 px-4 py-3 text-green-400">
-              Transaction ID submitted! Your spot is confirmed.
+          {txnError && (
+            <div className="mt-4 rounded-lg bg-red-500/10 border border-red-500/30 px-4 py-3 text-red-400 text-sm">
+              {txnError}
             </div>
-          ) : (
-            <>
-              {txnError && (
-                <div className="mt-4 rounded-lg bg-red-500/10 border border-red-500/30 px-4 py-3 text-red-400 text-sm">
-                  {txnError}
-                </div>
-              )}
-              <div className="mt-4 flex gap-3">
-                <input
-                  type="text"
-                  value={txnId}
-                  onChange={(e) => setTxnId(e.target.value)}
-                  placeholder="e.g. 432109876543"
-                  className="flex-1 rounded-xl border border-cream/20 bg-cream/5 px-4 py-3 text-cream placeholder:text-cream/30 focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold transition-colors"
-                />
-                <button
-                  type="button"
-                  onClick={handleTxnSubmit}
-                  disabled={submittingTxn || !txnId.trim()}
-                  className="rounded-xl bg-gold px-6 py-3 font-[family-name:var(--font-barlow-condensed)] font-extrabold tracking-[0.08em] text-dark transition-colors hover:bg-gold-hover disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px]"
-                >
-                  {submittingTxn ? "..." : "SUBMIT"}
-                </button>
-              </div>
-            </>
           )}
-        </div>
-
-        <div className="mt-6 rounded-xl border border-cream/10 bg-cream/5 p-5">
-          <div className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.12em] text-gold">
-            WHAT&apos;S NEXT
+          <div className="mt-4 flex gap-3">
+            <input
+              type="text"
+              value={txnId}
+              onChange={(e) => setTxnId(e.target.value)}
+              placeholder="e.g. 432109876543"
+              className="flex-1 rounded-xl border border-cream/20 bg-cream/5 px-4 py-3 text-cream placeholder:text-cream/30 focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold transition-colors"
+            />
+            <button
+              type="button"
+              onClick={handleTxnSubmit}
+              disabled={submittingTxn || !txnId.trim()}
+              className="rounded-xl bg-gold px-6 py-3 font-[family-name:var(--font-barlow-condensed)] font-extrabold tracking-[0.08em] text-dark transition-colors hover:bg-gold-hover disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px]"
+            >
+              {submittingTxn ? "..." : "CONFIRM"}
+            </button>
           </div>
-          <p className="mt-2 text-cream/60">
-            After payment, venue details and event updates will be shared on
-            WhatsApp and email.
-          </p>
-        </div>
-
-        <div className="mt-8 flex flex-wrap justify-center gap-4">
-          <a
-            href="https://www.instagram.com/milesnpeople/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block rounded-full border border-cream/20 px-6 py-3 font-[family-name:var(--font-barlow-condensed)] font-bold tracking-[0.08em] text-cream no-underline hover:border-gold hover:text-gold transition-colors"
-          >
-            FOLLOW ON INSTAGRAM
-          </a>
-          <a
-            href="/"
-            className="inline-block rounded-full border border-cream/20 px-6 py-3 font-[family-name:var(--font-barlow-condensed)] font-bold tracking-[0.08em] text-cream no-underline hover:border-cream/40 transition-colors"
-          >
-            BACK TO HOME
-          </a>
         </div>
       </div>
     );

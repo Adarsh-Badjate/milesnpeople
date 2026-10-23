@@ -162,7 +162,7 @@ export async function getNextBib(runId: string): Promise<string> {
   return String(num).padStart(4, "0");
 }
 
-export async function appendRegistration(data: Omit<Registration, "timestamp" | "checked_in" | "transaction_id">) {
+export async function appendRegistration(data: Omit<Registration, "timestamp" | "checked_in">) {
   const sheets = getSheets();
   const tab = getSheetTab(data.run_id);
   const timestamp = new Date().toISOString();
@@ -189,30 +189,12 @@ export async function appendRegistration(data: Omit<Registration, "timestamp" | 
         data.waiver,
         data.whatsapp_optin,
         "",
-        "",
+        data.transaction_id || "",
       ]],
     },
   });
 }
 
-export async function updateTransactionId(runId: string, whatsapp: string, transactionId: string) {
-  const sheets = getSheets();
-  const tab = getSheetTab(runId);
-  const res = await sheets.spreadsheets.values.get({
-    spreadsheetId: SHEET_ID,
-    range: `${tab}!A2:R`,
-  });
-  const rows = res.data.values || [];
-  const rowIndex = rows.findIndex((r) => r[1] === runId && r[4] === whatsapp);
-  if (rowIndex === -1) return;
-  const sheetRow = rowIndex + 2;
-  await sheets.spreadsheets.values.update({
-    spreadsheetId: SHEET_ID,
-    range: `${tab}!R${sheetRow}`,
-    valueInputOption: "USER_ENTERED",
-    requestBody: { values: [[transactionId]] },
-  });
-}
 
 export async function updateCheckedIn(runId: string, bib: string, checkedIn: boolean) {
   const sheets = getSheets();

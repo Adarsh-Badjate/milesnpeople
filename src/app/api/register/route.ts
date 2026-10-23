@@ -41,6 +41,8 @@ export async function POST(req: NextRequest) {
       source,
       waiver,
       whatsapp_optin,
+      transaction_id,
+      validate_only,
     } = body;
 
     const isSpecialEvent = run_id in SPECIAL_EVENTS;
@@ -131,6 +133,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Validate-only mode: return success without saving
+    if (validate_only) {
+      return NextResponse.json({
+        success: true,
+        validated: true,
+        run_id,
+        week,
+      });
+    }
+
     // Assign bib
     const bib = await getNextBib(run_id);
 
@@ -151,6 +163,7 @@ export async function POST(req: NextRequest) {
       source: source || "",
       waiver: "TRUE",
       whatsapp_optin: whatsapp_optin ? "TRUE" : "",
+      transaction_id: transaction_id || "",
     });
 
     return NextResponse.json({
