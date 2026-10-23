@@ -201,44 +201,18 @@ export function EventRegistrationForm() {
             {attendees} × ₹199
           </p>
 
-          {/* App-specific pay buttons */}
-          <div className="mt-5 grid grid-cols-1 gap-3">
-            <a
-              href={`gpay://upi/pay?pa=adarshjain7972-1@okhdfcbank&pn=Miles%20and%20People&am=${totalPrice}&cu=INR&tn=MNP%20Sundowner%20Event%20004`}
-              className="flex items-center justify-center gap-2 rounded-xl bg-white py-3.5 font-[family-name:var(--font-barlow-condensed)] text-lg font-extrabold tracking-[0.04em] text-dark no-underline hover:opacity-90 transition-opacity min-h-[52px]"
-            >
-              Pay with Google Pay
-            </a>
-            <a
-              href={`phonepe://pay?pa=adarshjain7972-1@okhdfcbank&pn=Miles%20and%20People&am=${totalPrice}&cu=INR&tn=MNP%20Sundowner%20Event%20004`}
-              className="flex items-center justify-center gap-2 rounded-xl bg-[#5f259f] py-3.5 font-[family-name:var(--font-barlow-condensed)] text-lg font-extrabold tracking-[0.04em] text-white no-underline hover:opacity-90 transition-opacity min-h-[52px]"
-            >
-              Pay with PhonePe
-            </a>
-            <a
-              href={`paytmmp://pay?pa=adarshjain7972-1@okhdfcbank&pn=Miles%20and%20People&am=${totalPrice}&cu=INR&tn=MNP%20Sundowner%20Event%20004`}
-              className="flex items-center justify-center gap-2 rounded-xl bg-[#00baf2] py-3.5 font-[family-name:var(--font-barlow-condensed)] text-lg font-extrabold tracking-[0.04em] text-white no-underline hover:opacity-90 transition-opacity min-h-[52px]"
-            >
-              Pay with Paytm
-            </a>
-            <a
-              href={upiUrl}
-              className="flex items-center justify-center gap-2 rounded-xl border border-cream/20 py-3.5 font-[family-name:var(--font-barlow-condensed)] text-lg font-extrabold tracking-[0.04em] text-cream no-underline hover:border-gold hover:text-gold transition-colors min-h-[52px]"
-            >
-              Other UPI App
-            </a>
-          </div>
-
           {/* QR code */}
           {qrDataUrl && (
-            <div className="mt-6">
-              <p className="text-sm text-cream/50 mb-3">Or scan QR code</p>
+            <div className="mt-5">
+              <p className="text-sm text-cream/60 mb-3">
+                Scan with any UPI app (GPay, PhonePe, Paytm)
+              </p>
               <div className="inline-block rounded-xl overflow-hidden">
                 <img
                   src={qrDataUrl}
                   alt={`UPI QR code for ₹${totalPrice}`}
-                  width={240}
-                  height={240}
+                  width={280}
+                  height={280}
                 />
               </div>
             </div>
