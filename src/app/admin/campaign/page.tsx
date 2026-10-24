@@ -14,20 +14,33 @@ interface Contact {
 function buildMessage(firstName: string): string {
   return `Hey ${firstName}! 👋
 
-You've been part of Miles & People community runs. Tomorrow we're doing something bigger.
+You've been part of the *MilesNPeople (MNP) community runs*, and tomorrow, we're bringing everyone together for something a little different! 🌕🏃‍♂️🎸
 
-🌅 *MNP SUNDOWNER #04*
-_Sun, 25 Oct · 5–8 PM · The E47 Cafe, CSN_
+Introducing *MNP SUNDOWNER #04 — RUN, JAM & CELEBRATE KOJAGIRI!* ✨
 
-A full evening — sundowner run, open jamming, ice breakers, Kojagiri milk, and new friends.
+Here's what your *₹199 spot* gets you:
 
-🎟️ *₹199 early bird* — everything included.
+🏃‍♂️ *Run with the community* — Be part of the MNP fam!
 
-⚠️ Only 40 spots. Filling fast.
+🎸 *A jamming experience* — Bring your voice, guitar, or any instrument and let's create some memories together.
 
-👉 Register: https://milesnpeople.in/events/sundowner-jamming-kojagiri
+🎯 *Fun games* — Unwind, laugh, and enjoy the evening.
 
-Don't miss this one!`;
+🤝 *New friendships* — We're building a community around people, and the best part is going home with new friends.
+
+🌕 *And a whole lot of good vibes!*
+
+*₹199. Four experiences. Countless memories. Worth the deal?* 😉
+
+You can register yourself or bring your entire gang along!
+
+👉 Register now: https://milesnpeople.in/events/sundowner-jamming-kojagiri
+
+MNP fam, this is our *first-ever jamming event*, and we need you to make it unforgettable. ❤️‍🔥
+
+📍 See you at the venue tomorrow!
+
+*Run. Jam. Connect. Repeat.* 🏃‍♂️🎸`;
 }
 
 export default function CampaignPage() {
