@@ -12,35 +12,35 @@ interface Contact {
 }
 
 function buildMessage(firstName: string): string {
-  return `Hey ${firstName}! 👋
+  return `Hey ${firstName}!
 
-You've been part of the *MilesNPeople (MNP) community runs*, and tomorrow, we're bringing everyone together for something a little different! 🌕🏃‍♂️🎸
+You've been part of the *MilesNPeople (MNP) community runs*, and tomorrow, we're bringing everyone together for something a little different!
 
-Introducing *MNP SUNDOWNER #04 — RUN, JAM & CELEBRATE KOJAGIRI!* ✨
+Introducing *MNP SUNDOWNER #04 — RUN, JAM & CELEBRATE KOJAGIRI!*
 
 Here's what your *₹199 spot* gets you:
 
-🏃‍♂️ *Run with the community* — Be part of the MNP fam!
+*Run with the community* — Be part of the MNP fam!
 
-🎸 *A jamming experience* — Bring your voice, guitar, or any instrument and let's create some memories together.
+*A jamming experience* — Bring your voice, guitar, or any instrument and let's create some memories together.
 
-🎯 *Fun games* — Unwind, laugh, and enjoy the evening.
+*Fun games* — Unwind, laugh, and enjoy the evening.
 
-🤝 *New friendships* — We're building a community around people, and the best part is going home with new friends.
+*New friendships* — We're building a community around people, and the best part is going home with new friends.
 
-🌕 *And a whole lot of good vibes!*
+*And a whole lot of good vibes!*
 
-*₹199. Four experiences. Countless memories. Worth the deal?* 😉
+*₹199. Four experiences. Countless memories. Worth the deal?*
 
 You can register yourself or bring your entire gang along!
 
-👉 Register now: https://milesnpeople.in/events/sundowner-jamming-kojagiri
+Register now: https://milesnpeople.in/events/sundowner-jamming-kojagiri
 
-MNP fam, this is our *first-ever jamming event*, and we need you to make it unforgettable. ❤️‍🔥
+MNP fam, this is our *first-ever jamming event*, and we need you to make it unforgettable.
 
-📍 See you at the venue tomorrow!
+See you at the venue tomorrow!
 
-*Run. Jam. Connect. Repeat.* 🏃‍♂️🎸`;
+*Run. Jam. Connect. Repeat.*`;
 }
 
 export default function CampaignPage() {
