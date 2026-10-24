@@ -8,7 +8,7 @@ interface Contact {
   firstName: string;
   whatsapp: string;
   gender: string;
-  run_id: string;
+  source: string;
 }
 
 function buildMessage(firstName: string): string {
@@ -207,7 +207,7 @@ export default function CampaignPage() {
                 <div>
                   <div className="font-semibold">{contact.name}</div>
                   <div className="text-sm text-cream/50">
-                    {contact.whatsapp} · {contact.gender || "—"}
+                    {contact.whatsapp} · {contact.source}{contact.gender ? ` · ${contact.gender}` : ""}
                   </div>
                 </div>
                 <button
