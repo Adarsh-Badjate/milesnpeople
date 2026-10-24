@@ -98,7 +98,7 @@ export default function CampaignPage() {
 
   function openWhatsApp(contact: Contact) {
     const message = encodeURIComponent(buildMessage(contact.firstName));
-    window.open(`https://wa.me/91${contact.whatsapp}?text=${message}`, "_blank");
+    window.open(`https://web.whatsapp.com/send?phone=91${contact.whatsapp}&text=${message}`, "_blank");
     markSent(contact.whatsapp);
   }
 
