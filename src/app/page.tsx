@@ -70,7 +70,7 @@ export default async function HomePage() {
             </p>
             <div className="flex flex-wrap gap-3">
               <a
-                href="/events/sundowner-jamming-kojagiri"
+                href="/events/halloween-run-005"
                 className="inline-block rounded-full bg-accent px-7 py-4 font-[family-name:var(--font-barlow-condensed)] text-xl font-extrabold tracking-[0.08em] text-white no-underline hover:bg-accent-hover transition-colors"
               >
                 JOIN OUR NEXT EVENT
@@ -87,28 +87,28 @@ export default async function HomePage() {
           {/* Next Event Card */}
           <div className="flex min-w-0 flex-1 basis-[400px] flex-col overflow-hidden rounded-[20px] border-2 border-ink bg-white">
             <div className="relative flex h-[220px] flex-col items-center justify-center bg-[#0A0A0A] text-cream">
-              {/* Decorative moon glow */}
+              {/* Decorative pumpkin glow */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="h-[180px] w-[180px] rounded-full bg-[#D4A853]/10 blur-[40px]" />
+                <div className="h-[180px] w-[180px] rounded-full bg-[#FF7A1A]/15 blur-[40px]" />
               </div>
               <div className="relative z-10 text-center">
-                <div className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.3em] text-[#D4A853]">
-                  COMMUNITY EVENT #04
+                <div className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.3em] text-[#FF7A1A]">
+                  WEEK 005 · 🎃
                 </div>
                 <div className="mt-2 font-[family-name:var(--font-anton)] text-[44px] leading-none text-cream">
-                  SUNDOWNER
+                  HALLOWEEN RUN
                 </div>
                 <div className="mt-1 font-[family-name:var(--font-barlow-condensed)] text-base font-bold tracking-[0.1em] text-cream/50">
-                  RUN · JAM · KOJAGIRI
+                  BIGGEST RUN · BIGGEST FUN
                 </div>
               </div>
             </div>
             <div className="flex flex-col gap-3.5 p-[22px_24px_24px]">
               <div className="font-[family-name:var(--font-anton)] text-4xl leading-none">
-                SUN, 25 OCT · 6 PM
+                SUN, 1 NOV · 6 AM
               </div>
 
-              <Countdown targetDate="2026-10-25T18:00:00+05:30" />
+              <Countdown targetDate="2026-11-01T06:00:00+05:30" />
 
               <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-[10px_16px] text-base">
                 <div>
@@ -116,24 +116,24 @@ export default async function HomePage() {
                   Chh. Sambhajinagar
                 </div>
                 <div>
-                  <div className="text-[13px] font-semibold tracking-[0.16em] text-muted">VENUE</div>
-                  Coming soon
+                  <div className="text-[13px] font-semibold tracking-[0.16em] text-muted">DISTANCE</div>
+                  3K / 5K
                 </div>
                 <div>
                   <div className="text-[13px] font-semibold tracking-[0.16em] text-muted">ENTRY</div>
-                  ₹200 / person
+                  ₹99 early bird
                 </div>
                 <div>
                   <div className="text-[13px] font-semibold tracking-[0.16em] text-muted">INCLUDES</div>
-                  3K Run · Jamming · Milk
+                  Run · Games · Breakfast deal
                 </div>
               </div>
 
               <a
-                href="/events/sundowner-jamming-kojagiri"
+                href="/events/halloween-run-005"
                 className="block rounded-xl bg-ink py-[15px] text-center font-[family-name:var(--font-barlow-condensed)] text-[19px] font-extrabold tracking-[0.1em] text-white no-underline hover:bg-accent transition-colors"
               >
-                JOIN THE EXPERIENCE
+                GRAB ₹99 EARLY BIRD
               </a>
             </div>
           </div>
@@ -144,30 +144,30 @@ export default async function HomePage() {
       <section aria-labelledby="featured-event" className="bg-dark text-cream">
         <div className="mx-auto max-w-[1200px] px-5 py-12">
           <a
-            href="/events/sundowner-jamming-kojagiri"
-            className="group block overflow-hidden rounded-2xl border border-[#D4A853]/20 bg-[#D4A853]/[0.04] p-8 md:p-10 no-underline transition-colors hover:border-[#D4A853]/40"
+            href="/events/halloween-run-005"
+            className="group block overflow-hidden rounded-2xl border border-[#FF7A1A]/25 bg-[#FF7A1A]/[0.05] p-8 md:p-10 no-underline transition-colors hover:border-[#FF7A1A]/50"
           >
             <div className="flex flex-wrap items-center justify-between gap-6">
               <div>
-                <div className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.3em] text-[#D4A853]">
-                  COMMUNITY EVENT #04 · 25 OCT 2026
+                <div className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.3em] text-[#FF7A1A]">
+                  WEEK 005 · SUN, 1 NOV 2026
                 </div>
                 <h2
                   id="featured-event"
                   className="mt-2 font-[family-name:var(--font-anton)] text-[clamp(28px,4vw,48px)] font-normal leading-[0.95] text-cream"
                 >
-                  MNP SUNDOWNER — RUN, JAM &amp; KOJAGIRI
+                  MNP HALLOWEEN RUN — BIGGEST RUN, BIGGEST FUN
                 </h2>
                 <p className="mt-3 max-w-[520px] text-cream/60">
-                  An evening of music, moonlight, and community. Run with us or skip the run — join the jamming directly. ₹200 per person.
+                  3K &amp; 5K run, crazy Halloween games, like-minded people, and breakfast &amp; beverage discounts at Twist N Flavours. Early bird slots at just ₹99.
                 </p>
               </div>
               <div className="flex flex-col items-end gap-3">
-                <span className="inline-block rounded-full bg-[#D4A853] px-7 py-3.5 font-[family-name:var(--font-barlow-condensed)] text-lg font-extrabold tracking-[0.08em] text-[#0A0A0A] group-hover:bg-[#C49A47] transition-colors">
-                  JOIN THE EXPERIENCE →
+                <span className="inline-block rounded-full bg-[#FF7A1A] px-7 py-3.5 font-[family-name:var(--font-barlow-condensed)] text-lg font-extrabold tracking-[0.08em] text-[#0A0A0A] group-hover:bg-[#FF8F3D] transition-colors">
+                  CLAIM ₹99 SPOT →
                 </span>
                 <span className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.1em] text-cream/40">
-                  CHH. SAMBHAJINAGAR · ₹200
+                  CHH. SAMBHAJINAGAR · ₹99 EARLY BIRD
                 </span>
               </div>
             </div>

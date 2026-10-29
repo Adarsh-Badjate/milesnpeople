@@ -13,15 +13,25 @@ const INDIAN_PHONE = /^[6-9]\d{9}$/;
 // Special events that are not stored in the Runs sheet
 const SPECIAL_EVENTS: Record<
   string,
-  { title: string; capacity: number; status: "open" | "closed" | "soon"; week: string; maleLimit?: number; femaleLimit?: number }
+  { title: string; capacity: number; status: "open" | "closed" | "soon"; week: string; options: string[]; maleLimit?: number; femaleLimit?: number }
 > = {
   "sundowner-004": {
     title: "MNP Sundowner — Run, Jam & Kojagiri",
     capacity: 40,
-    status: "open",
+    status: "closed",
     week: "004",
+    options: ["Run + Jamming", "Jamming Only"],
     maleLimit: 24,
     femaleLimit: 16,
+  },
+  "halloween-005": {
+    title: "MNP Halloween Run — Biggest Run, Biggest Fun",
+    capacity: 100,
+    status: "open",
+    week: "005",
+    options: ["3K", "5K"],
+    maleLimit: 60,
+    femaleLimit: 40,
   },
 };
 
@@ -59,7 +69,7 @@ export async function POST(req: NextRequest) {
 
     if (isSpecialEvent) {
       // Special event validation
-      if (!distance || !["Run + Jamming", "Jamming Only"].includes(distance))
+      if (!distance || !SPECIAL_EVENTS[run_id].options.includes(distance))
         errors.push("Please select your attendance preference");
       if (!gender || !["Male", "Female"].includes(gender))
         errors.push("Gender is required");

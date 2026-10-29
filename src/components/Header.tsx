@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Logo } from "./Logo";
 
 const NAV_LINKS = [
-  { href: "/events/sundowner-jamming-kojagiri", label: "Sundowner Event" },
+  { href: "/events/halloween-run-005", label: "Halloween Run" },
   { href: "/#runs", label: "Runs" },
   { href: "/#how", label: "How it works" },
   { href: "/#faq", label: "FAQ" },
@@ -51,7 +51,7 @@ export function Header() {
             </a>
           ))}
           <a
-            href="/events/sundowner-jamming-kojagiri#register"
+            href="/events/halloween-run-005#register"
             className="inline-block rounded-full bg-accent px-[22px] py-3 font-[family-name:var(--font-barlow-condensed)] text-base font-extrabold tracking-[0.08em] text-white no-underline hover:bg-accent-hover transition-colors"
           >
             REGISTER

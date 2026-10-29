@@ -19,10 +19,45 @@ const SHEET_ID = process.env.SHEET_ID!;
 // Map special event run_ids to their own sheet tabs
 const EVENT_SHEET_TABS: Record<string, string> = {
   "sundowner-004": "Sundowner 004",
+  "halloween-005": "Halloween 005",
 };
 
 function getSheetTab(runId?: string): string {
   return (runId && EVENT_SHEET_TABS[runId]) || "Registrations";
+}
+
+const REGISTRATION_HEADERS = [
+  "timestamp", "run_id", "bib", "name", "whatsapp", "email", "instagram",
+  "age_group", "gender", "distance", "experience", "emergency_name",
+  "emergency_phone", "source", "waiver", "whatsapp_optin", "checked_in",
+  "transaction_id",
+];
+
+// Create an event's sheet tab (with header row) the first time it's used,
+// so a new event works without manual sheet setup.
+const ensuredTabs = new Set<string>(["Registrations"]);
+
+async function ensureTab(tab: string) {
+  if (ensuredTabs.has(tab)) return;
+  const sheets = getSheets();
+  const meta = await sheets.spreadsheets.get({
+    spreadsheetId: SHEET_ID,
+    fields: "sheets.properties.title",
+  });
+  const exists = meta.data.sheets?.some((s) => s.properties?.title === tab);
+  if (!exists) {
+    await sheets.spreadsheets.batchUpdate({
+      spreadsheetId: SHEET_ID,
+      requestBody: { requests: [{ addSheet: { properties: { title: tab } } }] },
+    });
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: SHEET_ID,
+      range: `${tab}!A1:R1`,
+      valueInputOption: "RAW",
+      requestBody: { values: [REGISTRATION_HEADERS] },
+    });
+  }
+  ensuredTabs.add(tab);
 }
 
 // ── Runs ──
@@ -121,6 +156,7 @@ export async function getRegistrations(runId?: string): Promise<Registration[]> 
 
   if (runId) {
     const tab = getSheetTab(runId);
+    await ensureTab(tab);
     const res = await sheets.spreadsheets.values.get({
       spreadsheetId: SHEET_ID,
       range: `${tab}!A2:R`,
@@ -178,6 +214,7 @@ export async function getNextBib(runId: string): Promise<string> {
 export async function appendRegistration(data: Omit<Registration, "timestamp" | "checked_in">) {
   const sheets = getSheets();
   const tab = getSheetTab(data.run_id);
+  await ensureTab(tab);
   const timestamp = new Date().toISOString();
   await sheets.spreadsheets.values.append({
     spreadsheetId: SHEET_ID,

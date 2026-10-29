@@ -85,3 +85,29 @@ details summary::-webkit-details-marker {
   pointer-events: none;
   z-index: 100;
 }
+
+/* Halloween event */
+@keyframes spookyFloat {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-14px) rotate(3deg); }
+}
+
+@keyframes flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; text-shadow: 0 0 18px rgba(255, 122, 26, 0.65), 0 0 42px rgba(255, 122, 26, 0.35); }
+  20%, 24%, 55% { opacity: 0.55; text-shadow: none; }
+}
+
+.animate-spooky-float {
+  animation: spookyFloat 5s ease-in-out infinite;
+}
+
+.animate-flicker {
+  animation: flicker 4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-spooky-float,
+  .animate-flicker {
+    animation: none;
+  }
+}
