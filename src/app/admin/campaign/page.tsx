@@ -26,9 +26,9 @@ Here's what your *₹99 early bird spot* gets you:
 
 *Like-minded people* — Come solo, leave with a crew.
 
-*Twist N Flavours discount* — The run starts and ends at Twist N Flavours. Refuel with a discount on breakfast and beverages.
+*Twist N Flavours discount* — The run starts and ends at Twist N Flavours. Special discounts on everything on the menu.
 
-*Costumes welcome* — Vampire, zombie, witch, or just your gym fit!
+*Bigger space, crazier vibes* — More room to play. Costumes welcome!
 
 *₹99. Less than a coffee. Early bird slots are limited and the price goes up once they're gone.*
 

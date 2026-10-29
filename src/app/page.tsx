@@ -125,7 +125,7 @@ export default async function HomePage() {
                 </div>
                 <div>
                   <div className="text-[13px] font-semibold tracking-[0.16em] text-muted">INCLUDES</div>
-                  Run · Games · Breakfast deal
+                  Run · Games · Discounts
                 </div>
               </div>
 
@@ -159,7 +159,7 @@ export default async function HomePage() {
                   MNP HALLOWEEN RUN — BIGGEST RUN, BIGGEST FUN
                 </h2>
                 <p className="mt-3 max-w-[520px] text-cream/60">
-                  3K &amp; 5K run, crazy Halloween games, like-minded people, and breakfast &amp; beverage discounts at Twist N Flavours. Early bird slots at just ₹99.
+                  3K &amp; 5K run, crazy Halloween games, like-minded people, a bigger space, and special discounts on everything at Twist N Flavours. Early bird slots at just ₹99.
                 </p>
               </div>
               <div className="flex flex-col items-end gap-3">

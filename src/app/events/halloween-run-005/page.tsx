@@ -9,11 +9,11 @@ import { EventRegistrationForm } from "./EventRegistrationForm";
 export const metadata: Metadata = {
   title: "MNP Halloween Run — Biggest Run, Biggest Fun | Miles & People",
   description:
-    "3K & 5K Halloween run in Chhatrapati Sambhajinagar. Crazy Halloween games, like-minded people, and Twist N Flavours breakfast discounts. Sunday, 1 November 2026. Early bird ₹99.",
+    "3K & 5K Halloween run in Chhatrapati Sambhajinagar. Crazy Halloween games in a bigger space, like-minded people, and special discounts on everything at Twist N Flavours. Sunday, 1 November 2026. Early bird ₹99.",
   openGraph: {
     title: "MNP Halloween Run — Biggest Run, Biggest Fun",
     description:
-      "3K & 5K run + crazy Halloween games + breakfast discounts at Twist N Flavours. Sunday, 1 Nov. Early bird slots at just ₹99.",
+      "3K & 5K run + crazy Halloween games + special discounts on everything at Twist N Flavours. Sunday, 1 Nov. Early bird slots at just ₹99.",
   },
 };
 
@@ -71,8 +71,26 @@ export default function HalloweenRunPage() {
             <p className="mt-4 max-w-[620px] text-lg text-cream/60">
               Start and finish at Twist N Flavours with the craziest crowd in
               CSN, then stay for wild Halloween games, new friends, and
-              breakfast deals right there. Costumes are optional. Fun is not.
+              special discounts on everything on the menu. Costumes are
+              optional. Fun is not.
             </p>
+
+            {/* Unlocked perks */}
+            <div className="mt-6 max-w-[620px] rounded-2xl border border-[#A78BFA]/40 bg-[#7C3AED]/15 px-5 py-4">
+              <div className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.2em] text-[#C4B5FD]">
+                🔓 JUST UNLOCKED
+              </div>
+              <ul className="mt-2 space-y-1 text-cream/85">
+                <li>
+                  <span className="font-semibold text-cream">Special discounts on everything</span>{" "}
+                  at Twist N Flavours — the whole menu, MNP runners only
+                </li>
+                <li>
+                  <span className="font-semibold text-cream">A bigger space</span>{" "}
+                  — more room to run, play, and go crazy
+                </li>
+              </ul>
+            </div>
 
             {/* Event meta */}
             <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 font-[family-name:var(--font-barlow-condensed)] text-base font-bold tracking-[0.08em] text-cream/50">
@@ -156,7 +174,8 @@ export default function HalloweenRunPage() {
             "BIGGEST FUN",
             "3K & 5K",
             "CRAZY HALLOWEEN GAMES",
-            "TWIST N FLAVOURS DEALS",
+            "DISCOUNTS ON EVERYTHING",
+            "BIGGER SPACE",
             "₹99 EARLY BIRD",
             "SUN 1 NOV · CSN",
             "COSTUMES WELCOME",
@@ -194,15 +213,15 @@ export default function HalloweenRunPage() {
               {
                 n: "02",
                 title: "CRAZY HALLOWEEN GAMES",
-                text: "Post-run madness. Spooky games, silly challenges, and the kind of chaos you'll be talking about all week.",
+                text: "Post-run madness in a bigger space. Spooky games, silly challenges, and the kind of chaos you'll be talking about all week.",
                 tag: "★ MAIN EVENT",
                 featured: true,
               },
               {
                 n: "03",
-                title: "BREAKFAST AT TWIST N FLAVOURS",
-                text: "The run starts and ends here. Refuel with a discount on breakfast and beverages for every registered runner.",
-                tag: "EXCLUSIVE DISCOUNT",
+                title: "FEAST AT TWIST N FLAVOURS",
+                text: "The run starts and ends here. Refuel with special discounts on everything on the menu, exclusive for MNP runners.",
+                tag: "DISCOUNT ON EVERYTHING",
                 featured: false,
               },
             ].map((card) => (
@@ -252,7 +271,7 @@ export default function HalloweenRunPage() {
             <p className="text-lg text-cream/70">
               For the price of one latte you get a Sunday morning you&apos;ll
               actually remember — a run, a crowd of people who get you, crazy
-              games, and a breakfast deal at the end. Early bird slots are
+              games, and discounts on everything at Twist N Flavours. Early bird slots are
               limited and the price goes up once they&apos;re gone.
             </p>
           </div>
@@ -276,13 +295,13 @@ export default function HalloweenRunPage() {
               },
               {
                 icon: "🥞",
-                title: "Twist N Flavours Discount",
-                text: "Discount on breakfast and beverages at Twist N Flavours for every registered runner.",
+                title: "Discounts on Everything",
+                text: "Special discounts on the whole Twist N Flavours menu, exclusive for MNP runners.",
               },
               {
                 icon: "🎭",
-                title: "Costumes Welcome",
-                text: "Vampire, zombie, witch, or just your gym fit — show up as whoever you want.",
+                title: "Bigger Space, Crazier Vibes",
+                text: "More room to run, play, and go wild. Costumes welcome — vampire, zombie, witch, or just your gym fit.",
               },
               {
                 icon: "🔥",
@@ -406,11 +425,11 @@ export default function HalloweenRunPage() {
               },
               {
                 q: "What does the ₹99 include?",
-                a: "Your 3K or 5K run, the Halloween games, and a discount on breakfast and beverages at Twist N Flavours.",
+                a: "Your 3K or 5K run, the Halloween games, and special discounts on everything at Twist N Flavours.",
               },
               {
                 q: "Where is the venue?",
-                a: "Twist N Flavours, Chhatrapati Sambhajinagar. The run starts and ends there, so breakfast is right at the finish line.",
+                a: "Twist N Flavours, Chhatrapati Sambhajinagar. The run starts and ends there, so the food is right at the finish line.",
               },
               {
                 q: "How long is the early bird price available?",
