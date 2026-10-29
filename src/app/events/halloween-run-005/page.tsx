@@ -105,7 +105,7 @@ export default function HalloweenRunPage() {
               <div className="mb-3 font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.2em] text-cream/50">
                 FLAG-OFF IN
               </div>
-              <Countdown targetDate="2026-11-01T06:00:00+05:30" />
+              <Countdown targetDate="2026-11-01T06:00:00+05:30" dark />
             </div>
 
             {/* CTAs */}

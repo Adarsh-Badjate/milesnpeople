@@ -13,7 +13,11 @@ function calcTimeLeft(target: Date) {
   };
 }
 
-export function Countdown({ targetDate }: { targetDate: string }) {
+export function Countdown({ targetDate, dark = false }: { targetDate: string; dark?: boolean }) {
+  const valueColor = dark ? "text-cream" : "text-ink";
+  const accentColor = dark ? "text-[#FF7A1A]" : "text-accent";
+  const labelColor = dark ? "text-cream/50" : "text-muted";
+
   const [time, setTime] = useState({ days: 0, hrs: 0, min: 0, sec: 0 });
   const [mounted, setMounted] = useState(false);
 
@@ -29,8 +33,8 @@ export function Countdown({ targetDate }: { targetDate: string }) {
       <div className="flex gap-3">
         {["DAYS", "HRS", "MIN", "SEC"].map((label) => (
           <div key={label} className="text-center">
-            <div className="font-[family-name:var(--font-anton)] text-2xl leading-none text-ink">--</div>
-            <div className="font-[family-name:var(--font-barlow-condensed)] text-[11px] font-bold tracking-[0.2em] text-muted">{label}</div>
+            <div className={`font-[family-name:var(--font-anton)] text-2xl leading-none ${valueColor}`}>--</div>
+            <div className={`font-[family-name:var(--font-barlow-condensed)] text-[11px] font-bold tracking-[0.2em] ${labelColor}`}>{label}</div>
           </div>
         ))}
       </div>
@@ -50,12 +54,12 @@ export function Countdown({ targetDate }: { targetDate: string }) {
         <div key={item.label} className="text-center">
           <div
             className={`font-[family-name:var(--font-anton)] text-2xl leading-none ${
-              item.label === "SEC" ? "text-accent" : "text-ink"
+              item.label === "SEC" ? accentColor : valueColor
             }`}
           >
             {String(item.value).padStart(2, "0")}
           </div>
-          <div className="font-[family-name:var(--font-barlow-condensed)] text-[11px] font-bold tracking-[0.2em] text-muted">
+          <div className={`font-[family-name:var(--font-barlow-condensed)] text-[11px] font-bold tracking-[0.2em] ${labelColor}`}>
             {item.label}
           </div>
         </div>
