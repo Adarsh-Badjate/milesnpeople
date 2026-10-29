@@ -14,33 +14,33 @@ interface Contact {
 function buildMessage(firstName: string): string {
   return `Hey ${firstName}!
 
-You've been part of the *MilesNPeople (MNP) community runs*, and tomorrow, we're bringing everyone together for something a little different!
+You've run with the *MilesNPeople (MNP) community*, and this Sunday we're throwing our *BIGGEST RUN with the BIGGEST FUN* yet!
 
-Introducing *MNP SUNDOWNER #04 — RUN, JAM & CELEBRATE KOJAGIRI!*
+Introducing *MNP HALLOWEEN RUN — WEEK 005!*
 
-Here's what your *₹199 spot* gets you:
+Here's what your *₹99 early bird spot* gets you:
 
-*Run with the community* — Be part of the MNP fam!
+*3K or 5K run* — Pick your distance. Every pace welcome, walkers too.
 
-*A jamming experience* — Bring your voice, guitar, or any instrument and let's create some memories together.
+*Crazy Halloween games* — Spooky, silly, and total chaos after the run.
 
-*Fun games* — Unwind, laugh, and enjoy the evening.
+*Like-minded people* — Come solo, leave with a crew.
 
-*New friendships* — We're building a community around people, and the best part is going home with new friends.
+*Twist N Flavours discount* — Refuel with a discount on breakfast and beverages.
 
-*And a whole lot of good vibes!*
+*Costumes welcome* — Vampire, zombie, witch, or just your gym fit!
 
-*₹199. Four experiences. Countless memories. Worth the deal?*
+*₹99. Less than a coffee. Early bird slots are limited and the price goes up once they're gone.*
 
-You can register yourself or bring your entire gang along!
+Register yourself or bring your entire gang along!
 
-Register now: https://milesnpeople.in/events/sundowner-jamming-kojagiri
+Register now: https://milesnpeople.in/events/halloween-run-005
 
-MNP fam, this is our *first-ever jamming event*, and we need you to make it unforgettable.
+*Sunday, 1 Nov · 6:00 AM · Chh. Sambhajinagar*
 
-See you at the venue tomorrow!
+See you on Sunday, MNP fam!
 
-*Run. Jam. Connect. Repeat.*`;
+*Biggest Run. Biggest Fun.*`;
 }
 
 export default function CampaignPage() {
