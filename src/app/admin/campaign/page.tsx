@@ -26,7 +26,7 @@ Here's what your *₹99 early bird spot* gets you:
 
 *Like-minded people* — Come solo, leave with a crew.
 
-*Twist N Flavours discount* — Refuel with a discount on breakfast and beverages.
+*Twist N Flavours discount* — The run starts and ends at Twist N Flavours. Refuel with a discount on breakfast and beverages.
 
 *Costumes welcome* — Vampire, zombie, witch, or just your gym fit!
 
@@ -36,7 +36,7 @@ Register yourself or bring your entire gang along!
 
 Register now: https://milesnpeople.in/events/halloween-run-005
 
-*Sunday, 1 Nov · 6:00 AM · Chh. Sambhajinagar*
+*Sunday, 1 Nov · 6:00 AM · Twist N Flavours, Chh. Sambhajinagar*
 
 See you on Sunday, MNP fam!
 

@@ -157,7 +157,7 @@ export function EventRegistrationForm() {
             WHAT&apos;S NEXT
           </div>
           <p className="mt-2 text-cream/60">
-            Meeting point and event updates will be shared on WhatsApp and email. See you Sunday — costume optional!
+            See you Sunday, 1 Nov at 6:00 AM at Twist N Flavours. Event updates will be shared on WhatsApp and email. Costume optional!
           </p>
         </div>
 

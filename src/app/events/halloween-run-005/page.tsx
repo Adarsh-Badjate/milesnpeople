@@ -69,9 +69,9 @@ export default function HalloweenRunPage() {
             </p>
 
             <p className="mt-4 max-w-[620px] text-lg text-cream/60">
-              Run through the morning with the craziest crowd in CSN, then stay
-              for wild Halloween games, new friends, and breakfast deals at
-              Twist N Flavours. Costumes are optional. Fun is not.
+              Start and finish at Twist N Flavours with the craziest crowd in
+              CSN, then stay for wild Halloween games, new friends, and
+              breakfast deals right there. Costumes are optional. Fun is not.
             </p>
 
             {/* Event meta */}
@@ -87,6 +87,17 @@ export default function HalloweenRunPage() {
               <span>
                 <span className="text-[#FF7A1A]">DISTANCE</span>{" "}
                 <span className="text-cream">3K / 5K</span>
+              </span>
+              <span>
+                <span className="text-[#FF7A1A]">VENUE</span>{" "}
+                <a
+                  href="https://maps.google.com/?q=Twist+N+Flavours+Chhatrapati+Sambhajinagar"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cream underline underline-offset-2 hover:text-[#FF7A1A] transition-colors"
+                >
+                  TWIST N FLAVOURS
+                </a>
               </span>
               <span>
                 <span className="text-[#FF7A1A]">CITY</span>{" "}
@@ -190,7 +201,7 @@ export default function HalloweenRunPage() {
               {
                 n: "03",
                 title: "BREAKFAST AT TWIST N FLAVOURS",
-                text: "Refuel after the run. Every registered runner gets a discount on breakfast and beverages at Twist N Flavours.",
+                text: "The run starts and ends here. Refuel with a discount on breakfast and beverages for every registered runner.",
                 tag: "EXCLUSIVE DISCOUNT",
                 featured: false,
               },
@@ -313,7 +324,7 @@ export default function HalloweenRunPage() {
               LOCK YOUR SPOT.
             </h2>
             <p className="mb-10 text-center text-cream/50">
-              Sun, 1 Nov · 6:00 AM · 3K / 5K · ₹99 per person (early bird) · Chh. Sambhajinagar
+              Sun, 1 Nov · 6:00 AM · 3K / 5K · ₹99 per person (early bird) · Twist N Flavours, CSN
             </p>
             <EventRegistrationForm />
           </div>
@@ -398,8 +409,8 @@ export default function HalloweenRunPage() {
                 a: "Your 3K or 5K run, the Halloween games, and a discount on breakfast and beverages at Twist N Flavours.",
               },
               {
-                q: "Where do we meet?",
-                a: "The meeting point will be shared on WhatsApp and email after you register.",
+                q: "Where is the venue?",
+                a: "Twist N Flavours, Chhatrapati Sambhajinagar. The run starts and ends there, so breakfast is right at the finish line.",
               },
               {
                 q: "How long is the early bird price available?",

@@ -112,8 +112,8 @@ export default async function HomePage() {
 
               <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-[10px_16px] text-base">
                 <div>
-                  <div className="text-[13px] font-semibold tracking-[0.16em] text-muted">CITY</div>
-                  Chh. Sambhajinagar
+                  <div className="text-[13px] font-semibold tracking-[0.16em] text-muted">VENUE</div>
+                  Twist N Flavours
                 </div>
                 <div>
                   <div className="text-[13px] font-semibold tracking-[0.16em] text-muted">DISTANCE</div>
