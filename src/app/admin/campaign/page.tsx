@@ -30,7 +30,7 @@ Here's what your *₹99 early bird spot* gets you:
 
 *Bigger space, crazier vibes* — More room to play. Costumes welcome!
 
-*₹99. Less than a coffee. Early bird slots are limited and the price goes up once they're gone.*
+*₹99. Less than a coffee. But only the FIRST 30 registrations get this price. After that, it goes up.*
 
 Register yourself or bring your entire gang along!
 

@@ -159,7 +159,7 @@ export default async function HomePage() {
                   MNP HALLOWEEN RUN — BIGGEST RUN, BIGGEST FUN
                 </h2>
                 <p className="mt-3 max-w-[520px] text-cream/60">
-                  3K &amp; 5K run, crazy Halloween games, like-minded people, a bigger space, and special discounts on everything at Twist N Flavours. Early bird slots at just ₹99.
+                  3K &amp; 5K run, crazy Halloween games, like-minded people, a bigger space, and special discounts on everything at Twist N Flavours. First 30 registrations get ₹99.
                 </p>
               </div>
               <div className="flex flex-col items-end gap-3">
@@ -167,7 +167,7 @@ export default async function HomePage() {
                   CLAIM ₹99 SPOT →
                 </span>
                 <span className="font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.1em] text-cream/40">
-                  CHH. SAMBHAJINAGAR · ₹99 EARLY BIRD
+                  CHH. SAMBHAJINAGAR · FIRST 30 GET ₹99
                 </span>
               </div>
             </div>

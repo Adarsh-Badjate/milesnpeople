@@ -9,11 +9,11 @@ import { EventRegistrationForm } from "./EventRegistrationForm";
 export const metadata: Metadata = {
   title: "MNP Halloween Run — Biggest Run, Biggest Fun | Miles & People",
   description:
-    "3K & 5K Halloween run in Chhatrapati Sambhajinagar. Crazy Halloween games in a bigger space, like-minded people, and special discounts on everything at Twist N Flavours. Sunday, 1 November 2026. Early bird ₹99.",
+    "3K & 5K Halloween run in Chhatrapati Sambhajinagar. Crazy Halloween games in a bigger space, like-minded people, and special discounts on everything at Twist N Flavours. Sunday, 1 November 2026. First 30 registrations get ₹99 early bird.",
   openGraph: {
     title: "MNP Halloween Run — Biggest Run, Biggest Fun",
     description:
-      "3K & 5K run + crazy Halloween games + special discounts on everything at Twist N Flavours. Sunday, 1 Nov. Early bird slots at just ₹99.",
+      "3K & 5K run + crazy Halloween games + special discounts on everything at Twist N Flavours. Sunday, 1 Nov. Only the first 30 registrations get ₹99.",
   },
 };
 
@@ -53,7 +53,7 @@ export default function HalloweenRunPage() {
           <div className="max-w-[820px]">
             <div className="inline-flex items-center gap-2 rounded-full border border-[#FF7A1A]/40 bg-[#FF7A1A]/10 px-4 py-1.5 font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.2em] text-[#FF7A1A]">
               <span className="h-2 w-2 animate-pulse rounded-full bg-[#FF7A1A]" />
-              WEEK 005 · EARLY BIRD SLOTS LIVE
+              WEEK 005 · FIRST 30 SPOTS AT ₹99
             </div>
 
             <h1
@@ -176,7 +176,7 @@ export default function HalloweenRunPage() {
             "CRAZY HALLOWEEN GAMES",
             "DISCOUNTS ON EVERYTHING",
             "BIGGER SPACE",
-            "₹99 EARLY BIRD",
+            "FIRST 30 GET ₹99",
             "SUN 1 NOV · CSN",
             "COSTUMES WELCOME",
           ]}
@@ -271,8 +271,8 @@ export default function HalloweenRunPage() {
             <p className="text-lg text-cream/70">
               For the price of one latte you get a Sunday morning you&apos;ll
               actually remember — a run, a crowd of people who get you, crazy
-              games, and discounts on everything at Twist N Flavours. Early bird slots are
-              limited and the price goes up once they&apos;re gone.
+              games, and discounts on everything at Twist N Flavours. Only the
+              first 30 registrations get ₹99. After that, the price goes up.
             </p>
           </div>
 
@@ -305,8 +305,8 @@ export default function HalloweenRunPage() {
               },
               {
                 icon: "🔥",
-                title: "₹99 Early Bird",
-                text: "Limited early bird slots. Once they're gone, the price goes up.",
+                title: "First 30 Get ₹99",
+                text: "Early bird pricing is only for the first 30 registrations. Once they're gone, the price goes up.",
               },
             ].map((item) => (
               <div
@@ -334,7 +334,7 @@ export default function HalloweenRunPage() {
         <div className="relative mx-auto max-w-[1200px] px-5 py-16 md:py-24">
           <div className="mx-auto max-w-[560px]">
             <div className="mb-2 text-center font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.3em] text-[#FF7A1A]">
-              EARLY BIRD SLOTS ARE LIMITED
+              ONLY THE FIRST 30 GET ₹99
             </div>
             <h2
               id="register-title"
@@ -432,8 +432,8 @@ export default function HalloweenRunPage() {
                 a: "Twist N Flavours, Chhatrapati Sambhajinagar. The run starts and ends there, so the food is right at the finish line.",
               },
               {
-                q: "How long is the early bird price available?",
-                a: "Only until the early bird slots run out. After that the price goes up — so lock yours now.",
+                q: "How long is the ₹99 price available?",
+                a: "Only for the first 30 registrations. After that the price goes up — so lock yours now.",
               },
               {
                 q: "Can I bring friends?",
