@@ -133,7 +133,7 @@ export default async function HomePage() {
                 href="/events/halloween-run-005"
                 className="block rounded-xl bg-ink py-[15px] text-center font-[family-name:var(--font-barlow-condensed)] text-[19px] font-extrabold tracking-[0.1em] text-white no-underline hover:bg-accent transition-colors"
               >
-                GRAB ₹99 EARLY BIRD
+                REGISTRATIONS CLOSED
               </a>
             </div>
           </div>

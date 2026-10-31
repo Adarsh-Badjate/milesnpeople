@@ -27,7 +27,7 @@ const SPECIAL_EVENTS: Record<
   "halloween-005": {
     title: "MNP Halloween Run — Biggest Run, Biggest Fun",
     capacity: 100,
-    status: "open",
+    status: "closed",
     week: "005",
     options: ["3K", "5K"],
     maleLimit: 60,

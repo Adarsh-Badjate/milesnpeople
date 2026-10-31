@@ -4,7 +4,6 @@ import { Footer } from "@/components/Footer";
 import { Logo } from "@/components/Logo";
 import { Marquee } from "@/components/Marquee";
 import { Countdown } from "@/components/Countdown";
-import { EventRegistrationForm } from "./EventRegistrationForm";
 
 export const metadata: Metadata = {
   title: "MNP Halloween Run — Biggest Run, Biggest Fun | Miles & People",
@@ -37,7 +36,7 @@ export default function HalloweenRunPage() {
               href="#register"
               className="inline-block rounded-full bg-[#FF7A1A] px-5 py-2.5 font-[family-name:var(--font-barlow-condensed)] text-base font-extrabold tracking-[0.08em] text-[#0B0710] no-underline hover:bg-[#FF8F3D] transition-colors"
             >
-              GRAB ₹99 SPOT
+              REGISTRATIONS CLOSED
             </a>
           </div>
         </div>
@@ -53,7 +52,7 @@ export default function HalloweenRunPage() {
           <div className="max-w-[820px]">
             <div className="inline-flex items-center gap-2 rounded-full border border-[#FF7A1A]/40 bg-[#FF7A1A]/10 px-4 py-1.5 font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.2em] text-[#FF7A1A]">
               <span className="h-2 w-2 animate-pulse rounded-full bg-[#FF7A1A]" />
-              WEEK 005 · FIRST 30 SPOTS AT ₹99
+              WEEK 005 · REGISTRATIONS CLOSED
             </div>
 
             <h1
@@ -143,7 +142,7 @@ export default function HalloweenRunPage() {
                 href="#register"
                 className="inline-block rounded-full bg-[#FF7A1A] px-8 py-4 font-[family-name:var(--font-barlow-condensed)] text-xl font-extrabold tracking-[0.08em] text-[#0B0710] no-underline shadow-[0_0_40px_rgba(255,122,26,0.35)] hover:bg-[#FF8F3D] transition-colors"
               >
-                CLAIM EARLY BIRD — ₹99
+                REGISTRATIONS CLOSED
               </a>
               <a
                 href="#experience"
@@ -334,18 +333,18 @@ export default function HalloweenRunPage() {
         <div className="relative mx-auto max-w-[1200px] px-5 py-16 md:py-24">
           <div className="mx-auto max-w-[560px]">
             <div className="mb-2 text-center font-[family-name:var(--font-barlow-condensed)] text-sm font-bold tracking-[0.3em] text-[#FF7A1A]">
-              ONLY THE FIRST 30 GET ₹99
+              REGISTRATIONS CLOSED
             </div>
             <h2
               id="register-title"
               className="mb-3 text-center font-[family-name:var(--font-anton)] text-[clamp(36px,5vw,52px)] font-normal leading-[0.95]"
             >
-              LOCK YOUR SPOT.
+              SEE YOU AT THE START LINE.
             </h2>
-            <p className="mb-10 text-center text-cream/50">
-              Sun, 1 Nov · 6:00 AM · 3K / 5K · ₹99 per person (early bird) · Twist N Flavours, CSN
+            <p className="text-center text-cream/50">
+              Registrations for the Halloween Run are now closed. Already registered? See you on
+              Sun, 1 Nov · 6:00 AM · Twist N Flavours, CSN.
             </p>
-            <EventRegistrationForm />
           </div>
         </div>
       </section>
